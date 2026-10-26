@@ -177,4 +177,59 @@ class CustomerTest extends TestCase
         $this->assertEquals('Kak Aurel (Walk-in)', $sale->customer_name);
         $this->assertNull($sale->customer);
     }
+
+    /**
+     * Test Customer role can login and see Customer role badge & portal in web view.
+     */
+    public function test_customer_can_login_and_see_customer_role_in_web_view(): void
+    {
+        // 1. Login page displays Customer demo button
+        $loginPage = $this->get('/login');
+        $loginPage->assertStatus(200);
+        $loginPage->assertSee('Customer');
+        $loginPage->assertSee('customer@blushboutique.com');
+
+        // 2. Perform Customer Login
+        $response = $this->post('/login', [
+            'email' => 'customer@blushboutique.com',
+            'password' => 'password123',
+        ]);
+
+        $response->assertRedirect(route('dashboard'));
+        $this->assertAuthenticated();
+
+        // 3. Customer Dashboard shows Customer role badge & views
+        $customer = User::where('email', 'customer@blushboutique.com')->first();
+        $this->assertTrue($customer->isCustomer());
+        $this->assertFalse($customer->isAdmin());
+        $this->assertFalse($customer->isStaff());
+
+        $dashboard = $this->actingAs($customer)->get('/dashboard');
+        $dashboard->assertStatus(200);
+        $dashboard->assertSee('CUSTOMER / MEMBER');
+        $dashboard->assertSee('Portal Member Pelanggan');
+        $dashboard->assertSee('Riwayat Transaksi Belanja Saya');
+        $dashboard->assertSee('Member Prioritas BlushBoutique Club');
+    }
+
+    /**
+     * Test Customer role access restrictions: Staff & Admin only routes return 403.
+     */
+    public function test_customer_role_restrictions(): void
+    {
+        $customer = User::where('email', 'customer@blushboutique.com')->first();
+
+        // Customer can access Dashboard, Products list, and Catalog
+        $this->actingAs($customer)->get('/dashboard')->assertStatus(200);
+        $this->actingAs($customer)->get('/products')->assertStatus(200);
+        $this->actingAs($customer)->get('/')->assertStatus(200);
+
+        // Customer is forbidden from accessing Cashier, Purchases, Master Data Customers, Categories, and Reports
+        $this->actingAs($customer)->get('/sales/create')->assertStatus(403);
+        $this->actingAs($customer)->get('/purchases')->assertStatus(403);
+        $this->actingAs($customer)->get('/purchases/create')->assertStatus(403);
+        $this->actingAs($customer)->get('/customers')->assertStatus(403);
+        $this->actingAs($customer)->get('/categories')->assertStatus(403);
+        $this->actingAs($customer)->get('/reports/sales')->assertStatus(403);
+    }
 }

@@ -38,6 +38,16 @@ class User extends Authenticatable
         return $this->role === 'staff';
     }
 
+    public function isCustomer(): bool
+    {
+        return $this->role === 'customer';
+    }
+
+    public function customer()
+    {
+        return $this->hasOne(Customer::class, 'email', 'email');
+    }
+
     public function sales()
     {
         return $this->hasMany(Sale::class);

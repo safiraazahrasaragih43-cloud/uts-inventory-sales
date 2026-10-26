@@ -1,9 +1,209 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Ringkas')
-@section('page_title', 'Ringkasan Toko & Inventory')
+@section('title', auth()->user()->isCustomer() ? 'Dashboard Pelanggan' : 'Dashboard Ringkas')
+@section('page_title', auth()->user()->isCustomer() ? 'Portal Member Pelanggan' : 'Ringkasan Toko & Inventory')
 
 @section('content')
+@if(auth()->user()->isCustomer())
+<div class="space-y-8">
+    <!-- Welcome Customer Banner Pastel -->
+    <div class="p-6 rounded-3xl bg-gradient-to-r from-blush-100 via-rose-50 to-sky-50 border border-blush-200 shadow-sm relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div class="space-y-2 max-w-xl">
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/80 border border-blush-200 text-[#F27893] text-xs font-semibold shadow-xs">
+                <span>🌸</span>
+                <span>Member Prioritas BlushBoutique Club</span>
+            </div>
+            <h3 class="text-2xl font-bold text-blush-950">
+                Selamat Datang, {{ auth()->user()->name }}!
+            </h3>
+            <p class="text-xs text-gray-600 leading-relaxed">
+                Senang melihat Anda kembali. Di portal pelanggan ini, Anda dapat memantau riwayat belanja busana favorit, melihat struk nota resmi, dan menjelajahi katalog busana pastel terbaru.
+            </p>
+        </div>
+
+        <div class="flex items-center space-x-3 flex-shrink-0">
+            <a href="{{ route('catalog.index') }}" 
+               class="inline-flex items-center space-x-2 px-5 py-3 rounded-2xl text-xs font-semibold text-white bg-gradient-to-r from-blush-500 to-blush-600 hover:from-blush-600 hover:to-blush-700 shadow-md shadow-blush-300/40 transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                <span>Katalog Busana</span>
+            </a>
+            <a href="https://wa.me/6281234567890?text=Halo%20BlushBoutique,%20saya%20member%20{{ urlencode(auth()->user()->name) }}" 
+               target="_blank"
+               class="inline-flex items-center space-x-2 px-4 py-3 rounded-2xl text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors">
+                <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.347.491 1.2.534 1.287.043.087.072.188.014.303-.058.116-.087.188-.173.289l-.26.302c-.087.086-.179.18-.077.355.101.174.449.741.964 1.2.662.591 1.221.774 1.394.861.174.086.275.072.376-.044.101-.116.433-.505.549-.679.116-.173.231-.144.39-.086s1.011.477 1.184.564.289.13.332.202c.043.072.043.419-.101.824z"/></svg>
+                <span>Bantuan WA</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Customer KPI Cards Pastel (Blush Pink, Light Blue, Soft Green, Soft Purple) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- 1. Total Belanja -->
+        <div class="bg-white rounded-3xl p-6 border border-blush-200/80 shadow-sm flex items-center justify-between">
+            <div>
+                <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Akumulasi Belanja</p>
+                <h3 class="text-2xl font-bold text-blush-900 mt-1">Rp {{ number_format($customerTotalSpent, 0, ',', '.') }}</h3>
+                <p class="text-[11px] text-gray-500 mt-1">Riwayat belanja Anda</p>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-blush-100 text-[#F27893] flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+        </div>
+
+        <!-- 2. Frekuensi Transaksi -->
+        <div class="bg-white rounded-3xl p-6 border border-sky-100 shadow-sm flex items-center justify-between">
+            <div>
+                <p class="text-xs font-semibold uppercase tracking-wider text-sky-600">Total Transaksi Belanja</p>
+                <h3 class="text-2xl font-bold text-gray-800 mt-1">{{ $customerSales->count() }} <span class="text-sm font-normal text-gray-400">kali</span></h3>
+                <p class="text-[11px] text-gray-500 mt-1">Faktur pembelian kasir</p>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-[#EBF8FF] text-sky-600 flex items-center justify-center border border-sky-200/60">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            </div>
+        </div>
+
+        <!-- 3. Koleksi Busana -->
+        <div class="bg-white rounded-3xl p-6 border border-emerald-100 shadow-sm flex items-center justify-between">
+            <div>
+                <p class="text-xs font-semibold uppercase tracking-wider text-emerald-600">Busana Dimiliki</p>
+                <h3 class="text-2xl font-bold text-gray-800 mt-1">{{ $customerTotalItems }} <span class="text-sm font-normal text-gray-400">pcs</span></h3>
+                <p class="text-[11px] text-gray-500 mt-1">Koleksi fesyen terpilih</p>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-[#F0FFF4] text-emerald-600 flex items-center justify-center border border-emerald-200/60">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+            </div>
+        </div>
+
+        <!-- 4. Status Member -->
+        <div class="bg-white rounded-3xl p-6 border border-purple-100 shadow-sm flex items-center justify-between">
+            <div>
+                <p class="text-xs font-semibold uppercase tracking-wider text-purple-600">Status Keanggotaan</p>
+                <h3 class="text-xl font-bold text-purple-900 mt-1">Member VIP</h3>
+                <p class="text-[11px] text-emerald-600 font-semibold mt-1">✓ Akun Aktif & Terverifikasi</p>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center border border-purple-200/60">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Riwayat Belanja Saya Section -->
+    <div id="riwayat-belanja" class="bg-white rounded-3xl p-6 border border-blush-200/80 shadow-sm space-y-4">
+        <div class="flex items-center justify-between pb-4 border-b border-blush-100">
+            <div>
+                <h3 class="text-base font-bold text-gray-900 flex items-center space-x-2">
+                    <svg class="w-5 h-5 text-[#F27893]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                    <span>Riwayat Transaksi Belanja Saya</span>
+                </h3>
+                <p class="text-xs text-gray-500 mt-0.5">Daftar struk transaksi belanja busana Anda di kasir butik.</p>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+                <thead>
+                    <tr class="bg-[#FAF5F7] text-gray-600 font-semibold uppercase text-[11px] border-y border-blush-200">
+                        <th class="py-3 px-4">No. Faktur</th>
+                        <th class="py-3 px-4">Tanggal Pembelian</th>
+                        <th class="py-3 px-4">Item Busana</th>
+                        <th class="py-3 px-4">Total Belanja</th>
+                        <th class="py-3 px-4">Metode Bayar</th>
+                        <th class="py-3 px-4 text-right">Struk Nota</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-blush-100">
+                    @forelse($customerSales as $sale)
+                        <tr class="hover:bg-blush-50/40 transition-colors">
+                            <td class="py-3.5 px-4 font-mono font-bold text-[#F27893]">
+                                {{ $sale->invoice_number }}
+                            </td>
+                            <td class="py-3.5 px-4 text-gray-600">
+                                {{ $sale->sale_date->translatedFormat('d F Y, H:i') }} WIB
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <span class="font-medium text-gray-800">{{ $sale->items->count() }} jenis busana</span>
+                                <span class="text-gray-400">({{ $sale->items->sum('quantity') }} pcs)</span>
+                            </td>
+                            <td class="py-3.5 px-4 font-bold text-gray-900">
+                                Rp {{ number_format($sale->total_amount, 0, ',', '.') }}
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-purple-50 text-purple-700 border border-purple-200">
+                                    {{ $sale->payment_method }}
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-right">
+                                <a href="{{ route('sales.show', $sale) }}" 
+                                   class="inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-[#FAF5F7] hover:bg-blush-100 text-[#F27893] border border-blush-200 font-semibold text-[11px] transition-colors">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                    <span>Lihat Struk</span>
+                                </a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="py-10 text-center">
+                                <div class="max-w-xs mx-auto space-y-2 text-gray-400">
+                                    <p class="text-sm font-semibold text-gray-600">Belum Ada Transaksi Belanja</p>
+                                    <p class="text-xs">Saat ini Anda belum memiliki riwayat pembelian di butik kami.</p>
+                                    <div class="pt-2">
+                                        <a href="{{ route('catalog.index') }}" class="inline-flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-[#F27893] text-white font-semibold text-xs shadow-xs">
+                                            <span>Mulai Belanja di Katalog</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Rekomendasi Koleksi Busana Pastel Terbaru -->
+    <div class="space-y-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <h3 class="text-base font-bold text-gray-900">Koleksi Busana Rekomendasi Member</h3>
+                <p class="text-xs text-gray-500">Pilihan terhangat musim ini bernuansa pastel lembut.</p>
+            </div>
+            <a href="{{ route('catalog.index') }}" class="text-xs font-semibold text-[#F27893] hover:text-[#e54d71] flex items-center space-x-1">
+                <span>Lihat Seluruh Koleksi</span>
+                <span>→</span>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            @foreach($featuredProducts as $item)
+                <div class="bg-white rounded-2xl p-4 border border-blush-200/80 shadow-sm space-y-3 hover:shadow-md transition-shadow">
+                    <div class="w-full h-44 rounded-xl bg-[#FAF5F7] overflow-hidden flex items-center justify-center relative">
+                        @if($item->image)
+                            @if(str_starts_with($item->image, 'http'))
+                                <img src="{{ $item->image }}" alt="{{ $item->name }}" class="w-full h-full object-cover">
+                            @else
+                                <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="w-full h-full object-cover">
+                            @endif
+                        @else
+                            <div class="text-[#F27893] text-xs font-semibold">Blush Boutique</div>
+                        @endif
+                        <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/90 text-blush-700 shadow-xs">
+                            Stok: {{ $item->stock }}
+                        </span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-gray-400 font-medium uppercase">{{ $item->category->name ?? 'Busana' }}</span>
+                        <h4 class="text-xs font-bold text-gray-900 truncate" title="{{ $item->name }}">{{ $item->name }}</h4>
+                        <p class="text-sm font-bold text-[#F27893] mt-1">{{ $item->formatted_selling_price }}</p>
+                    </div>
+                    <a href="{{ route('catalog.show', $item) }}" class="w-full py-2 rounded-xl bg-[#FAF5F7] hover:bg-blush-100 text-[#F27893] font-semibold text-xs flex items-center justify-center transition-colors">
+                        <span>Lihat Detail Busana</span>
+                    </a>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</div>
+@else
 <div class="space-y-8">
 
     <!-- KPI Metric Cards -->
@@ -231,4 +431,5 @@
     </div>
 
 </div>
+@endif
 @endsection

@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Seed Users (Admin & Staff)
+        // 1. Seed Users (Admin, Staff, Customer)
         $admin = User::firstOrCreate(
             ['email' => 'admin@blushboutique.com'],
             [
@@ -35,6 +35,15 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Staff Kasir Blush',
                 'password' => Hash::make('password123'),
                 'role' => 'staff',
+            ]
+        );
+
+        $customerUser = User::firstOrCreate(
+            ['email' => 'customer@blushboutique.com'],
+            [
+                'name' => 'Clarissa Stephanie (Member)',
+                'password' => Hash::make('password123'),
+                'role' => 'customer',
             ]
         );
 

@@ -14,7 +14,7 @@ Blush Boutique adalah aplikasi sistem informasi berbasis web yang mengintegrasik
 Aplikasi ini menerapkan prinsip rekayasa perangkat lunak standar:
 - **Arsitektur Model-View-Controller (MVC)**: Menjamin pemisahan logika penanganan data, alur bisnis (*business logic*), dan antarmuka pengguna.
 - **Eloquent Object-Relational Mapping (ORM)**: Mengelola pemetaan skema basis data relasional ke dalam objek model yang terstruktur dan aman dari SQL Injection.
-- **Role-Based Access Control (RBAC)**: Membatasi hak akses pengguna ke dalam dua tingkatan peran, yaitu Admin (Owner) dan Staff (Kasir).
+- **Role-Based Access Control (RBAC)**: Membatasi hak akses pengguna ke dalam tiga tingkatan peran, yaitu Admin (Owner), Staff (Kasir), dan Customer (Member Pelanggan).
 - **Desain Antarmuka Pengguna**: Menggunakan palet warna pastel (*blush pink*, *light blue*, dan *soft green*) melalui Tailwind CSS untuk menjaga konsistensi visual aplikasi.
 
 ### Latar Belakang Masalah
@@ -119,12 +119,13 @@ php artisan migrate:fresh --seed
 
 ## 6. Demo Account
 
-Sistem menyediakan dua akun uji dengan hak akses berbeda untuk keperluan evaluasi sistem:
+Sistem menyediakan tiga akun uji dengan hak akses berbeda untuk keperluan evaluasi sistem:
 
 | Peran (Role) | Nama Pengguna | Alamat Email | Password | Cakupan Hak Akses |
 | :--- | :--- | :--- | :--- | :--- |
 | Admin / Owner | Owner / Admin Blush | `admin@blushboutique.com` | `password123` | Akses penuh: manajemen Master Data (Kategori, Produk, Supplier, Customer), Laporan Keuangan Penjualan & Laba, Laporan Valuasi Aset Stok, serta Transaksi Kasir dan Restock. |
 | Staff Kasir | Staff Kasir Blush | `staff@blushboutique.com` | `password123` | Akses operasional: Transaksi Penjualan Kasir (POS), Transaksi Pembelian Stok Masuk, melihat katalog busana dan data pelanggan. Dibatasi secara ketat dari menu Master Data dan Laporan Laba (HTTP 403 Forbidden). |
+| Customer Member | Clarissa Stephanie (Member) | `customer@blushboutique.com` | `password123` | Akses member pelanggan: Portal dashboard pelanggan, kartu status member VIP, riwayat transaksi belanja pribadi, melihat struk nota pembelian, dan cek katalog busana. Dibatasi dari operasional kasir, pembelian supplier, master data, dan laporan laba (HTTP 403 Forbidden). |
 
 ---
 
@@ -246,7 +247,7 @@ erDiagram
         string name
         string email UK
         string password
-        string role "admin / staff"
+        string role "admin / staff / customer"
         timestamp created_at
         timestamp updated_at
     }

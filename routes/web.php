@@ -35,20 +35,25 @@ Route::middleware(['auth'])->group(function () {
     // Dashboard Ringkas
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Transaksi Penjualan (Sales) - Kasir & Admin
-    Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
-    Route::get('/sales/create', [SaleController::class, 'create'])->name('sales.create');
-    Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
+    // Operasional Kasir, Restock, dan Kelola Customer (Khusus Staff Kasir & Admin)
+    Route::middleware(['role:admin,staff'])->group(function () {
+        // Transaksi Penjualan (Sales) - Kasir & Admin
+        Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
+        Route::get('/sales/create', [SaleController::class, 'create'])->name('sales.create');
+        Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
+
+        // Master Customer / Pelanggan
+        Route::resource('customers', CustomerController::class);
+
+        // Transaksi Pembelian Stok (Purchases) - Restock
+        Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index');
+        Route::get('/purchases/create', [PurchaseController::class, 'create'])->name('purchases.create');
+        Route::post('/purchases', [PurchaseController::class, 'store'])->name('purchases.store');
+        Route::get('/purchases/{purchase}', [PurchaseController::class, 'show'])->name('purchases.show');
+    });
+
+    // Detail Faktur Nota Struk (Dapat diakses Admin, Staff, dan Customer)
     Route::get('/sales/{sale}', [SaleController::class, 'show'])->name('sales.show');
-
-    // Master Customer / Pelanggan
-    Route::resource('customers', CustomerController::class);
-
-    // Transaksi Pembelian Stok (Purchases) - Restock
-    Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index');
-    Route::get('/purchases/create', [PurchaseController::class, 'create'])->name('purchases.create');
-    Route::post('/purchases', [PurchaseController::class, 'store'])->name('purchases.store');
-    Route::get('/purchases/{purchase}', [PurchaseController::class, 'show'])->name('purchases.show');
 
     // Master Produk (Staff hanya bisa melihat daftar & detail produk)
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');

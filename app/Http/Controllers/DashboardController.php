@@ -56,6 +56,37 @@ class DashboardController extends Controller
             $totalInventoryAsset = Product::selectRaw('SUM(stock * purchase_price) as total_asset')->value('total_asset') ?? 0;
         }
 
+        // Data Khusus Role Customer
+        $customerRecord = null;
+        $customerSales = collect();
+        $customerTotalSpent = 0;
+        $customerTotalItems = 0;
+        $featuredProducts = collect();
+
+        if ($user->isCustomer()) {
+            $customerRecord = Customer::where('email', $user->email)
+                ->orWhere('name', 'like', '%' . explode(' ', $user->name)[0] . '%')
+                ->first();
+
+            if ($customerRecord) {
+                $customerSales = Sale::where('customer_id', $customerRecord->id)
+                    ->with(['items.product', 'user'])
+                    ->latest('sale_date')
+                    ->get();
+            } else {
+                $customerSales = Sale::where('customer_name', 'like', '%' . $user->name . '%')
+                    ->with(['items.product', 'user'])
+                    ->latest('sale_date')
+                    ->get();
+            }
+
+            $customerTotalSpent = $customerSales->sum('total_amount');
+            $customerTotalItems = $customerSales->sum(function ($s) {
+                return $s->items->sum('quantity');
+            });
+            $featuredProducts = Product::with('category')->where('stock', '>', 0)->latest()->take(4)->get();
+        }
+
         return view('dashboard.index', compact(
             'user',
             'totalProducts',
@@ -71,7 +102,12 @@ class DashboardController extends Controller
             'lowStockItems',
             'recentSales',
             'recentPurchases',
-            'totalInventoryAsset'
+            'totalInventoryAsset',
+            'customerRecord',
+            'customerSales',
+            'customerTotalSpent',
+            'customerTotalItems',
+            'featuredProducts'
         ));
     }
 }

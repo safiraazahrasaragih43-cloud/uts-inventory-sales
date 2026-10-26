@@ -13,7 +13,7 @@ class CustomerSeeder extends Seeder
             [
                 'name' => 'Clarissa Stephanie',
                 'phone' => '081298761234',
-                'email' => 'clarissa.stephanie@gmail.com',
+                'email' => 'customer@blushboutique.com',
                 'address' => 'Jl. Dago No. 18, Bandung, Jawa Barat',
             ],
             [

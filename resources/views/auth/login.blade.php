@@ -88,15 +88,19 @@
 
             <!-- Demo 1-Click Credentials Helper -->
             <div class="mt-6 pt-6 border-t border-blush-100">
-                <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2 text-center">Akun Demo (Klik untuk Isi Otomatis):</p>
-                <div class="grid grid-cols-2 gap-2">
-                    <button type="button" onclick="fillCreds('admin@blushboutique.com', 'password123')" class="p-2 rounded-xl bg-blush-50 hover:bg-blush-100 text-blush-800 border border-blush-200 text-xs text-left transition-colors">
-                        <div class="font-bold">👑 Admin / Owner</div>
-                        <div class="text-[10px] text-gray-500">Master Data & Laporan</div>
+                <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2.5 text-center">Akun Demo (Klik untuk Isi Otomatis):</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <button type="button" onclick="fillCreds('admin@blushboutique.com', 'password123')" class="p-2.5 rounded-xl bg-blush-50 hover:bg-blush-100 text-blush-800 border border-blush-200 text-xs text-left transition-colors">
+                        <div class="font-bold flex items-center space-x-1"><span>👑 Admin</span></div>
+                        <div class="text-[10px] text-gray-500">Master & Laba</div>
                     </button>
-                    <button type="button" onclick="fillCreds('staff@blushboutique.com', 'password123')" class="p-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 text-xs text-left transition-colors">
-                        <div class="font-bold">🛍️ Staff Kasir</div>
-                        <div class="text-[10px] text-gray-500">Transaksi & Cek Stok</div>
+                    <button type="button" onclick="fillCreds('staff@blushboutique.com', 'password123')" class="p-2.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 text-xs text-left transition-colors">
+                        <div class="font-bold flex items-center space-x-1"><span>🛍️ Staff</span></div>
+                        <div class="text-[10px] text-gray-500">Kasir & Stok</div>
+                    </button>
+                    <button type="button" onclick="fillCreds('customer@blushboutique.com', 'password123')" class="p-2.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 text-xs text-left transition-colors">
+                        <div class="font-bold flex items-center space-x-1"><span>🌸 Customer</span></div>
+                        <div class="text-[10px] text-gray-500">Member Butik</div>
                     </button>
                 </div>
             </div>

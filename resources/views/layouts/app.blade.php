@@ -92,9 +92,19 @@
                 </div>
                 <div class="overflow-hidden">
                     <p class="text-xs font-semibold text-gray-800 truncate">{{ auth()->user()->name }}</p>
-                    <span class="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full {{ auth()->user()->isAdmin() ? 'bg-rose-100 text-rose-700 border border-rose-200' : 'bg-purple-100 text-purple-700 border border-purple-200' }}">
-                        {{ auth()->user()->isAdmin() ? 'ADMIN / OWNER' : 'STAFF KASIR' }}
-                    </span>
+                    @if(auth()->user()->isAdmin())
+                        <span class="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 border border-rose-200">
+                            👑 ADMIN / OWNER
+                        </span>
+                    @elseif(auth()->user()->isStaff())
+                        <span class="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 border border-purple-200">
+                            🛍️ STAFF KASIR
+                        </span>
+                    @else
+                        <span class="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full bg-sky-100 text-sky-700 border border-sky-200">
+                            🌸 CUSTOMER / MEMBER
+                        </span>
+                    @endif
                 </div>
             </div>
 
@@ -104,46 +114,67 @@
 
                 <a href="{{ route('dashboard') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blush-50 hover:text-blush-700 transition-colors {{ request()->routeIs('dashboard') ? 'active-nav' : '' }}">
                     <svg class="w-5 h-5 text-blush-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                    <span>Dashboard</span>
+                    <span>Dashboard {{ auth()->user()->isCustomer() ? 'Customer' : '' }}</span>
                 </a>
 
-                <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-blush-400 mt-5 mb-2">Operasional & Transaksi</p>
+                @if(auth()->user()->isCustomer())
+                    <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-sky-600 mt-5 mb-2">Menu Pelanggan</p>
 
-                <!-- Sales -->
-                <a href="{{ route('sales.create') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blush-50 hover:text-blush-700 transition-colors {{ request()->routeIs('sales.create') ? 'active-nav' : '' }}">
-                    <svg class="w-5 h-5 text-blush-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <span>Kasir / Penjualan Baru</span>
-                </a>
+                    <!-- Belanja & Katalog -->
+                    <a href="{{ route('catalog.index') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blush-50 hover:text-blush-700 transition-colors {{ request()->routeIs('catalog.*') ? 'active-nav' : '' }}">
+                        <svg class="w-5 h-5 text-blush-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                        <span>Katalog Busana Koleksi</span>
+                    </a>
 
-                <a href="{{ route('sales.index') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blush-50 hover:text-blush-700 transition-colors {{ request()->routeIs('sales.index', 'sales.show') ? 'active-nav' : '' }}">
-                    <svg class="w-5 h-5 text-blush-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
-                    <span>Riwayat Penjualan</span>
-                </a>
+                    <a href="{{ route('products.index') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blush-50 hover:text-blush-700 transition-colors {{ request()->routeIs('products.*') ? 'active-nav' : '' }}">
+                        <svg class="w-5 h-5 text-blush-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                        <span>Cek Ketersediaan Stok</span>
+                    </a>
 
-                <!-- Customers -->
-                <a href="{{ route('customers.index') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blush-50 hover:text-blush-700 transition-colors {{ request()->routeIs('customers.*') ? 'active-nav' : '' }}">
-                    <svg class="w-5 h-5 text-blush-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                    <span>Pelanggan (Customers)</span>
-                </a>
+                    <!-- Riwayat Belanja Saya -->
+                    <a href="{{ route('dashboard') }}#riwayat-belanja" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blush-50 hover:text-blush-700 transition-colors">
+                        <svg class="w-5 h-5 text-blush-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                        <span>Riwayat Belanja Saya</span>
+                    </a>
+                @else
+                    <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-blush-400 mt-5 mb-2">Operasional & Transaksi</p>
 
-                <!-- Purchases -->
-                <a href="{{ route('purchases.create') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blush-50 hover:text-blush-700 transition-colors {{ request()->routeIs('purchases.create') ? 'active-nav' : '' }}">
-                    <svg class="w-5 h-5 text-blush-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <span>Restock / Beli Stok</span>
-                </a>
+                    <!-- Sales -->
+                    <a href="{{ route('sales.create') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blush-50 hover:text-blush-700 transition-colors {{ request()->routeIs('sales.create') ? 'active-nav' : '' }}">
+                        <svg class="w-5 h-5 text-blush-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span>Kasir / Penjualan Baru</span>
+                    </a>
 
-                <a href="{{ route('purchases.index') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blush-50 hover:text-blush-700 transition-colors {{ request()->routeIs('purchases.index', 'purchases.show') ? 'active-nav' : '' }}">
-                    <svg class="w-5 h-5 text-blush-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
-                    <span>Riwayat Pembelian</span>
-                </a>
+                    <a href="{{ route('sales.index') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blush-50 hover:text-blush-700 transition-colors {{ request()->routeIs('sales.index', 'sales.show') ? 'active-nav' : '' }}">
+                        <svg class="w-5 h-5 text-blush-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                        <span>Riwayat Penjualan</span>
+                    </a>
 
-                <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-blush-400 mt-5 mb-2">Inventory Pakaian</p>
+                    <!-- Customers -->
+                    <a href="{{ route('customers.index') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blush-50 hover:text-blush-700 transition-colors {{ request()->routeIs('customers.*') ? 'active-nav' : '' }}">
+                        <svg class="w-5 h-5 text-blush-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                        <span>Pelanggan (Customers)</span>
+                    </a>
 
-                <!-- Products -->
-                <a href="{{ route('products.index') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blush-50 hover:text-blush-700 transition-colors {{ request()->routeIs('products.*') ? 'active-nav' : '' }}">
-                    <svg class="w-5 h-5 text-blush-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                    <span>Daftar Produk & Stok</span>
-                </a>
+                    <!-- Purchases -->
+                    <a href="{{ route('purchases.create') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blush-50 hover:text-blush-700 transition-colors {{ request()->routeIs('purchases.create') ? 'active-nav' : '' }}">
+                        <svg class="w-5 h-5 text-blush-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span>Restock / Beli Stok</span>
+                    </a>
+
+                    <a href="{{ route('purchases.index') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blush-50 hover:text-blush-700 transition-colors {{ request()->routeIs('purchases.index', 'purchases.show') ? 'active-nav' : '' }}">
+                        <svg class="w-5 h-5 text-blush-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+                        <span>Riwayat Pembelian</span>
+                    </a>
+
+                    <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-blush-400 mt-5 mb-2">Inventory Pakaian</p>
+
+                    <!-- Products -->
+                    <a href="{{ route('products.index') }}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-blush-50 hover:text-blush-700 transition-colors {{ request()->routeIs('products.*') ? 'active-nav' : '' }}">
+                        <svg class="w-5 h-5 text-blush-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                        <span>Daftar Produk & Stok</span>
+                    </a>
+                @endif
 
                 @if(auth()->user()->isAdmin())
                     <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-rose-500 mt-5 mb-2">Master & Laporan (Admin)</p>
