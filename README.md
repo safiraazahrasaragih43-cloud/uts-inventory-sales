@@ -12,88 +12,89 @@
 
 > **Dokumentasi Proyek Ujian Tengah Semester (UTS)**  
 > **Mata Kuliah:** Web Programming 2  
-> **Topik:** Pengembangan Aplikasi Berbasis Web Menggunakan Framework PHP (Laravel 10)  
-> **Tema UI:** Pastel Soft (*Blush Pink, Light Blue, Soft Green*)  
+> **Aplikasi:** Sistem Informasi Inventaris dan Penjualan (Point of Sales)  
+> **Tema Desain Antarmuka:** Pastel (*Blush Pink, Light Blue, Soft Green*)  
 
 ---
 
 ## 1. Project Overview
 
-### 📖 Deskripsi Singkat
-**Blush Boutique** adalah aplikasi web Sistem Informasi Inventaris dan Penjualan (*Point of Sales* / POS) yang dirancang khusus untuk memfasilitasi operasional toko dan butik pakaian wanita. Aplikasi ini mengimplementasikan konsep arsitektur **Model-View-Controller (MVC)**, manipulasi basis data menggunakan **Eloquent ORM**, mekanisme autentikasi terenkripsi, serta pembatasan akses berbasis peran (**Role-Based Access Control / RBAC**) yang memisahkan otoritas antara **Admin (Owner)** dan **Staff (Kasir)**. 
-
-Secara visual, antarmuka aplikasi mengadopsi tema warna **pastel lembut** (*blush pink*, *light blue*, dan *soft green*) yang menghadirkan pengalaman visual bersih, estetis, dan nyaman bagi staf toko maupun pengunjung etalase publik.
+### 📖 Tentang Blush Boutique
+**Blush Boutique** adalah aplikasi web Sistem Informasi Inventaris dan Penjualan (*Point of Sales* / POS) yang dirancang khusus untuk operasional toko dan butik pakaian wanita. Aplikasi ini dibangun menggunakan framework **Laravel 10**, bahasa pemrograman **PHP 8.1+**, serta basis data **MySQL / SQLite** dengan mengadopsi standar arsitektur perangkat lunak modern:
+- **Model-View-Controller (MVC)**: Pemisahan logika bisnis, antarmuka pengguna, dan perutean data yang rapi dan terstruktur.
+- **Eloquent ORM**: Pengelolaan relasi basis data relasional yang ekspresif, aman, dan efisien.
+- **Autentikasi & Role-Based Access Control (RBAC)**: Mekanisme pembagian hak akses bertingkat antara dua peran utama, yaitu **Admin / Owner** dan **Staff Kasir**.
+- **Tema Desain Visual Pastel**: Memadukan perpaduan warna lembut (*blush pink*, *light blue*, dan *soft green*) yang menghadirkan tampilan feminin, bersih, dan nyaman bagi staf toko maupun pengunjung etalase publik.
 
 ### 🔍 Latar Belakang Masalah
-Dalam operasional butik busana berskala kecil hingga menengah, pencatatan manual berbasis buku atau lembar kerja (*spreadsheet*) kerap memicu permasalahan krusial, antara lain:
-1. **Ketidaksesuaian Stok Fisik dan Catatan**: Pergerakan keluar-masuk busana sering terlewat untuk dicatat, mengakibatkan selisih antara ketersediaan fisik di rak/gudang dan data pembukuan.
-2. **Produk Habis Tetap Terjual**: Ketiadaan mekanisme validasi stok otomatis dan perlindungan transaksi (*concurrency lock*) menyebabkan staf kasir tetap dapat memproses penjualan atas pakaian yang stoknya sudah habis.
-3. **Ketiadaan Pemisahan Otoritas (Hak Akses Campur Aduk)**: Seluruh staf kerap dapat melihat atau bahkan mengubah data modal, laporan margin keuntungan toko, dan master data produk tanpa pembatasan hak akses yang tegas.
+Dalam pengelolaan toko busana retail konvensional, pencatatan manual sering menghadapi kendala nyata:
+1. **Ketidaksesuaian Stok Fisik vs Catatan**: Mutasi barang yang tidak terdata seketika menyebabkan perbedaan antara jumlah pakaian di rak fisik dan data buku stok.
+2. **Produk Habis Masih Bisa Terjual**: Ketiadaan validasi ketersediaan barang secara *real-time* memungkinkan kasir menjual pakaian yang fisiknya telah habis, merugikan kepuasan pelanggan.
+3. **Pencampuran Hak Akses Pengguna**: Tanpa adanya sistem RBAC, staf kasir memiliki akses bebas ke data modal, harga beli, dan laporan margin laba bersih toko yang seharusnya bersifat rahasia bagi pemilik usaha (*owner*).
 
 ### 🎯 Tujuan Sistem
-Sistem Informasi **Blush Boutique** dikembangkan untuk:
-- Mencatat seluruh **Master Data** (Kategori, Produk, Supplier, dan Pelanggan) secara terpusat, terstruktur, dan konsisten.
-- Mengotomatisasi penambahan stok saat **Transaksi Pembelian (*Stock-in*)** dan pengurangan stok saat **Transaksi Penjualan (*Stock-out*)**.
-- Menjamin konsistensi data melalui proteksi **Database Transaction** (`DB::transaction`) dan penguncian baris database (`lockForUpdate`), sehingga penjualan atas produk yang habis otomatis **ditolak** oleh sistem.
-- Menerapkan pengamanan data melalui **Role-Based Access Control (RBAC)** agar laporan finansial dan kendali master data terlindungi secara ketat.
+Sistem Informasi **Blush Boutique** bertujuan untuk:
+- Mencatat seluruh **Master Data** (Kategori, Produk Pakaian, Supplier, dan Pelanggan) secara terpusat dan konsisten.
+- Mengotomatisasi siklus pergerakan barang: **Stock-in** saat pembelian restock dari supplier dan **Stock-out** saat transaksi kasir.
+- Menjamin integritas data transaksi dan konsistensi stok menggunakan mekanisme **Database Transaction** (`DB::transaction`) dan penguncian baris produk (`lockForUpdate`).
+- Mengamankan operasional toko dengan membatasi wewenang staf kasir murni pada transaksi harian dan menjaga modul manajerial hanya untuk pemilik toko.
 
 ---
 
 ## 2. Requirements
 
-Sebelum menjalankan proyek ini, pastikan komputer/server lokal Anda telah memenuhi spesifikasi berikut:
+Pastikan lingkungan server lokal Anda memenuhi spesifikasi perangkat lunak berikut:
 
-| Komponen | Versi / Kebutuhan Minimal | Keterangan |
+| Perangkat Lunak | Kebutuhan Minimum | Deskripsi / Fungsi |
 | :--- | :--- | :--- |
-| **Bahasa Pemrograman** | PHP `>= 8.1` | Ekstensi aktif: `pdo_mysql` / `pdo_sqlite`, `curl`, `mbstring`, `openssl`, `fileinfo`, `tokenizer` |
-| **Package Manager (PHP)** | Composer `>= 2.2` | Pengelola paket dependensi Laravel |
-| **JavaScript Runtime** | Node.js `>= 18.x` & NPM `>= 9.x` | Digunakan untuk kompilasi aset front-end (Vite / Tailwind CSS) |
-| **Basis Data (Database)** | MySQL `>= 8.0` / MariaDB `>= 10.4` atau SQLite `>= 3.35` | Didukung secara *out-of-the-box* |
-| **Web Server** | Apache / Nginx / PHP Built-in Server | `php artisan serve` untuk lingkungan pengujian |
+| **PHP** | Versi `>= 8.1` | Ekstensi aktif: `pdo_mysql` / `pdo_sqlite`, `curl`, `mbstring`, `openssl`, `fileinfo`, `tokenizer` |
+| **Composer** | Versi `>= 2.2` | Dependency Manager paket PHP Laravel |
+| **Node.js & NPM** | Node `>= 18.x` & NPM `>= 9.x` | Compiler aset front-end (Vite & Tailwind CSS) |
+| **Web Server** | Apache / Nginx / PHP Built-in | Server web lokal (contoh: `php artisan serve`) |
+| **Database** | MySQL `>= 8.0` / MariaDB `>= 10.4` atau SQLite `>= 3.35` | Sistem Manajemen Basis Data Relasional |
 
 ---
 
 ## 3. Installation
 
-Unduh repositori proyek ke komputer lokal Anda melalui terminal Git:
+Unduh kode sumber proyek dari repositori resmi dan pasang dependensi backend:
 
-```bash
-git clone https://github.com/safiraazahrasaragih43-cloud/uts-inventory-sales.git
-cd uts-inventory-sales
-```
+1. **Kloning Repositori**:
+   ```bash
+   git clone https://github.com/safiraazahrasaragih43-cloud/uts-inventory-sales.git
+   cd uts-inventory-sales
+   ```
 
-Kemudian pasang seluruh paket dependensi PHP proyek menggunakan Composer:
-
-```bash
-composer install
-```
+2. **Pasang Dependensi PHP (Composer)**:
+   ```bash
+   composer install
+   ```
 
 ---
 
 ## 4. Environment Setup
 
-1. **Duplikasi File Konfigurasi Lingkungan (`.env`)**:
+1. **Salin File Environment**:
    Salin berkas templat `.env.example` menjadi `.env`:
    ```bash
    cp .env.example .env
    ```
-   *(Untuk pengguna Command Prompt Windows tanpa utilitas `cp`, gunakan `copy .env.example .env`)*.
+   *(Pada sistem operasi Windows Command Prompt, gunakan perintah `copy .env.example .env`)*.
 
 2. **Generate Application Key**:
-   Buat kunci enkripsi unik aplikasi Laravel:
+   Buat kunci enkripsi aplikasi Laravel yang unik:
    ```bash
    php artisan key:generate
    ```
 
-3. **Konfigurasi Database di `.env`**:
-   Buka file `.env` dan sesuaikan pengaturan koneksi basis data Anda:
+3. **Konfigurasi Kredensial Basis Data di `.env`**:
+   Buka file `.env` dan sesuaikan konfigurasi koneksi basis data yang Anda gunakan:
 
-   - **Opsi A: Menggunakan SQLite (Siap Pakai / Bawaan Demo)**:
+   - **Opsi A: Menggunakan SQLite (Rekomendasi Cepat & Portabel)**:
      ```ini
      DB_CONNECTION=sqlite
-     # DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD dapat dikosongkan/dikomentari
      ```
-     *(Database SQLite akan otomatis dibuat di `database/database.sqlite` jika belum ada)*.
+     *(Database SQLite akan otomatis dibuat dan siap pakai di `database/database.sqlite`)*.
 
    - **Opsi B: Menggunakan MySQL**:
      ```ini
@@ -104,9 +105,9 @@ composer install
      DB_USERNAME=root
      DB_PASSWORD=
      ```
-     *(Pastikan database `blush_boutique_db` telah dibuat sebelumnya di MySQL/phpMyAdmin)*.
+     *(Pastikan Anda telah membuat database bernama `blush_boutique_db` melalui phpMyAdmin atau MySQL CLI)*.
 
-4. **Hubungkan Symlink Berkas Foto Produk**:
+4. **Tautkan Storage Penyimpanan Foto Produk**:
    ```bash
    php artisan storage:link
    ```
@@ -115,14 +116,14 @@ composer install
 
 ## 5. Migration & Seeding
 
-Jalankan perintah migrasi untuk membuat seluruh skema tabel basis data, sekaligus mengeksekusi *Database Seeder* untuk mengisi akun demo, kategori, supplier, koleksi busana, serta contoh data transaksi:
+Jalankan perintah migrasi skema tabel serta pengisian data awal (*seeder*) untuk akun demo, kategori, supplier, produk pakaian awal, dan contoh transaksi:
 
 ```bash
 php artisan migrate --seed
 ```
 
 > [!TIP]
-> Jika Anda ingin mereset ulang seluruh basis data ke kondisi awal bersih:
+> Jika sewaktu-waktu Anda ingin mengembalikan basis data ke kondisi awal bersih (*fresh start*):
 > ```bash
 > php artisan migrate:fresh --seed
 > ```
@@ -131,93 +132,91 @@ php artisan migrate --seed
 
 ## 6. Demo Account
 
-Aplikasi menyediakan dua jenis akun demo standar untuk mempermudah evaluasi dan pengujian sistem oleh dosen penguji:
+Tersedia akun pengujian standar dengan hak akses berbeda untuk keperluan evaluasi sistem:
 
-| Peran (Role) | Nama Pengguna | Alamat Email | Password | Hak Akses Utama |
+| Peran (Role) | Nama Akun | Alamat Email | Password | Hak Akses Sistem |
 | :--- | :--- | :--- | :--- | :--- |
-| **👑 Admin / Owner** | Owner / Admin Blush | `admin@blushboutique.com` | `password123` | • Kelola Master Data (Kategori, Produk Busana, Supplier, Pelanggan)<br>• Unggah foto & kendali stok produk<br>• Laporan Analisis Penjualan & Laba Kotor Toko<br>• Laporan Valuasi Nilai Persediaan Aset<br>• Transaksi Kasir POS & Restock |
-| **🛍️ Staff Kasir** | Staff Kasir Blush | `staff@blushboutique.com` | `password123` | • Transaksi Penjualan Kasir Baru (*Point of Sales*)<br>• Transaksi Restock Masuk dari Supplier<br>• Melihat Katalog & Stok Pakaian<br>• Melihat Data Pelanggan<br>• *Dibatasi secara ketat dari Master Data & Laporan Laba (HTTP 403)* |
+| **👑 Admin / Owner** | Owner / Admin Blush | `admin@blushboutique.com` | `password123` | • Kendali penuh Master Data (Kategori, Produk, Supplier, Pelanggan)<br>• Akses Laporan Penjualan & Margin Laba Kotor Toko<br>• Akses Laporan Valuasi Nilai Persediaan Modal<br>• Transaksi Penjualan Kasir & Transaksi Restock |
+| **🛍️ Staff Kasir** | Staff Kasir Blush | `staff@blushboutique.com` | `password123` | • Transaksi Penjualan Kasir Baru (*Point of Sales*)<br>• Transaksi Pembelian / Restock Pakaian Masuk<br>• Melihat Katalog Busana & Stok Fisik Tersedia<br>• Melihat Daftar Pelanggan<br>• *Ditolak otomatis (403 Forbidden) dari Master Data & Laporan Finansial* |
 
 ---
 
 ## 7. Features
 
-Aplikasi **Blush Boutique** dilengkapi dengan serangkaian modul dan fitur operasional:
+Aplikasi **Blush Boutique** dilengkapi modul-modul fungsional berikut:
 
 1. **🔐 Autentikasi & Role-Based Access Control (RBAC)**:
-   - Login terenkripsi dengan password hashing Bcrypt.
-   - Proteksi otorisasi halaman melalui middleware [`RoleMiddleware`](app/Http/Middleware/RoleMiddleware.php).
-   - Penolakan akses otomatis (*403 Forbidden*) jika Staff mencoba mengakses rute manajerial Admin.
-2. **👗 Master Data CRUD (Create, Read, Update, Delete)**:
-   - **Kategori Busana**: Pengelompokan busana (*Dress, Blouse, Skirt, Knitwear, dll*) dengan slug otomatis.
-   - **Produk Pakaian**: Pengelolaan busana lengkap dengan kode SKU unik, harga beli/modal, harga jual, stok fisik, batas stok minimum, serta unggah gambar produk.
-   - **Pemasok (Suppliers)**: Data produsen busana, nomor kontak telepon, email, dan alamat kantor.
-   - **Pelanggan (Customers / Members)**: Pencatatan identitas pembeli tetap (nama, nomor WA/telepon, email, alamat) serta profil analisis riwayat belanja pelanggan.
-3. **📥 Transaksi Pembelian Stok (Purchase / Stock-In)**:
-   - Faktur penerimaan pasokan pakaian dari supplier resmi.
-   - Menghitung subtotal dan akumulasi total nilai restock secara otomatis.
-   - Otomatis melakukan penambahan unit fisik pakaian ke database (*stock increment*).
-4. **📤 Transaksi Penjualan Kasir (Sales / Point of Sales / Stock-Out)**:
-   - Layanan kasir cepat dengan dukungan pelanggan member maupun pembeli umum (*Walk-in Customer*).
-   - Pemilihan ragam metode bayar: Tunai, QRIS, Transfer Bank, dan Kartu Debit/Kredit.
-   - Cetak struk/nota kasir resmi siap print (*optimized print layout*).
+   - Login terenkripsi dengan proteksi Bcrypt hashing.
+   - Pembedaan hak akses rute menggunakan [`RoleMiddleware`](app/Http/Middleware/RoleMiddleware.php).
+   - Penolakan akses otomatis (*403 Forbidden*) jika Staff mencoba mengakses menu Admin.
+2. **👗 Kelola Master Data Lengkap (CRUD)**:
+   - **Kategori Pakaian**: Tambah, ubah, dan hapus kategori busana dengan auto-slug.
+   - **Produk Busana**: Kelola busana lengkap dengan kode SKU unik, harga modal (beli), harga jual, stok fisik, batas minimum stok, dan unggah foto produk.
+   - **Pemasok (Suppliers)**: Data identitas distributor busana, contact person, telepon, email, dan alamat.
+   - **Pelanggan (Customers)**: Manajemen data member pelanggan dan halaman profil riwayat belanja.
+3. **📥 Transaksi Pembelian (Purchase / Stock-In)**:
+   - Faktur restock pasokan busana masuk dari supplier.
+   - Menghitung subtotal secara otomatis dan menambah jumlah stok pakaian fisik di inventaris (*stock increment*).
+4. **📤 Transaksi Penjualan Kasir (Sales / Stock-Out)**:
+   - Form kasir POS interaktif dengan dukungan pembeli member maupun pembeli umum (*Walk-in Customer*).
+   - Berbagai pilihan metode pembayaran: Tunai, QRIS, Transfer Bank, dan Debit/Kredit.
+   - Fitur cetak struk/nota resmi yang rapi (*print layout ready*).
 5. **⚡ Automatic Stock Updates & Data Integrity**:
-   - Transaksi dibungkus dalam mekanisme `DB::transaction()` untuk menjamin sifat ACID.
-   - Proteksi *race condition* dengan penguncian baris produk `Product::lockForUpdate()`.
-   - **Validasi Stok Real-Time**: Transaksi kasir **otomatis ditolak** jika jumlah pembelian melebihi stok yang tersedia.
-   - Perhitungan total transaksi murni dilakukan di sisi server (*server-side integrity*), mencegah manipulasi harga dari browser client.
+   - Transaksi dibungkus dalam mekanisme `DB::transaction()` untuk menjamin konsistensi ACID.
+   - Penguncian baris database menggunakan `Product::lockForUpdate()` untuk mencegah *race condition*.
+   - **Validasi Stok Ketat**: Penjualan otomatis **ditolak** apabila jumlah permintaan melebihi kuantitas stok yang tersedia.
+   - Kalkulasi harga dan subtotal dihitung murni di sisi server (*server-side calculation*), mencegah manipulasi input dari sisi browser client.
 6. **📊 Dashboard Ringkas & Peringatan Stok**:
-   - Kartu metrik KPI: Omset Penjualan Hari Ini, Total Akumulasi Penjualan, Total Unit Pakaian, dan Nilai Aset Modal Toko (khusus Admin).
-   - Peringatan stok kritis (*Low Stock Warning Alert*) untuk produk yang berada di bawah atau sama dengan batas minimum stok.
+   - Kartu metrik KPI: Omset Penjualan Hari Ini, Total Akumulasi Omset, Total Fisik Stok Pakaian, dan Nilai Aset Modal Inventory (khusus Admin).
+   - Indikator peringatan stok kritis (*Low Stock Alert*) untuk busana yang stoknya `<= minimum_stock`.
    - Feed riwayat transaksi terkini (penjualan kasir & restock barang masuk).
 7. **🔍 Pencarian, Filter & Pagination**:
-   - Pencarian cerdas berbasis kata kunci (SKU, nama pakaian, nomor faktur, nama pelanggan).
-   - Filter transaksi kasir berdasarkan metode pembayaran dan rentang tanggal.
-   - Paginasi data rapi di seluruh tabel data untuk menjaga performa rendering.
-8. **🌐 Etalase Katalog Web Publik**:
-   - Dapat diakses pengunjung umum **tanpa perlu login** pada rute utama (`/`).
-   - Fitur pemesanan langsung terhubung ke WhatsApp toko secara otomatis.
+   - Pencarian cerdas berbasis kata kunci (nama baju, kode SKU, nomor faktur, atau nama pelanggan).
+   - Filter transaksi kasir berdasarkan rentang tanggal dan metode pembayaran.
+   - Penomoran halaman (*pagination*) di seluruh tabel untuk menjaga efisiensi rendering aplikasi.
+8. **🛍️ Etalase Publik & Integrasi WhatsApp**:
+   - Halaman katalog publik yang dapat diakses pengunjung tanpa perlu login pada rute utama (`/`).
+   - Tombol pemesanan langsung yang otomatis terhubung ke WhatsApp toko dengan pesan pemesanan terformat.
 
 ---
 
 ## 8. Known Limitations
 
-Sebagai proyek akademik Ujian Tengah Semester (UTS), terdapat beberapa batasan sistem yang dapat dikembangkan lebih lanjut pada fase berikutnya:
-
-1. **Integrasi Pembayaran Belum Menggunakan Payment Gateway Nyata**: Pembayaran (QRIS/Transfer/Debit) saat ini dicatat secara konfirmasi administratif kasir dan belum terhubung ke API gateway otomatis pihak ketiga (seperti Midtrans atau Xendit).
-2. **Cakupan Multi-Gudang Terbatas**: Sistem dirancang untuk operasional satu toko/butik fisik tunggal (*Single Store/Warehouse*), belum mendukung transfer stok antar-cabang toko (*multi-branch transfer*).
-3. **Notifikasi Stok Masih Berbasis Web**: Peringatan stok menipis ditampilkan secara visual melalui kartu alert pada dashboard web dan belum memiliki layanan notifikasi otomatis via SMS Gateway atau push email.
-4. **Modul Retur Barang Sederhana**: Pengembalian atau penukaran barang masih ditangani secara administratif manual oleh kasir, belum memiliki alur *Return Merchandising Authorization (RMA)* terpisah.
+Beberapa batasan teknis dari sistem pada rilis ini:
+1. **Belum Terintegrasi Payment Gateway Nyata**: Transaksi pembayaran non-tunai (QRIS/Transfer/Debit) saat ini dicatat secara konfirmasi administratif kasir dan belum terhubung ke API payment gateway pihak ketiga (seperti Midtrans atau Xendit).
+2. **Cakupan Multi-Gudang Terbatas**: Sistem dikonfigurasi untuk operasional satu toko/butik fisik tunggal (*Single Warehouse/Store*) dan belum mendukung mutasi stok antar-cabang.
+3. **Notifikasi Berbasis Tampilan Web**: Peringatan stok menipis disajikan secara visual melalui kartu alert pada dashboard aplikasi dan belum memiliki layanan pengiriman notifikasi otomatis via SMS Gateway atau push email.
+4. **Alur Retur Barang Sederhana**: Pengembalian atau penukaran barang masih ditangani secara manual oleh kasir, belum memiliki modul terpisah untuk *Return Merchandising Authorization (RMA)*.
 
 ---
 
-## ⚡ Panduan Instalasi Cepat (Reproducible Terminal Commands)
+## ⚡ Urutan Lengkap Perintah Terminal (Reproducible Setup)
 
-Berikut adalah satu blok instruksi terminal berurutan yang dapat langsung dijalankan ulang oleh dosen penguji untuk memasang dan menjalankan proyek dari nol:
+Berikut adalah satu blok kode perintah terminal yang dapat disalin dan dijalankan langsung oleh dosen penguji untuk memasang dan menjalankan proyek secara berurutan dari awal:
 
 ```bash
 # 1. Kloning repositori proyek dari GitHub
 git clone https://github.com/safiraazahrasaragih43-cloud/uts-inventory-sales.git
 
-# 2. Masuk ke direktori proyek
+# 2. Masuk ke dalam direktori proyek
 cd uts-inventory-sales
 
-# 3. Pasang seluruh dependensi PHP backend
+# 3. Pasang dependensi PHP melalui Composer
 composer install
 
-# 4. Buat berkas konfigurasi lingkungan
+# 4. Buat berkas konfigurasi lingkungan (.env)
 cp .env.example .env
 
-# 5. Generate Application Encryption Key
+# 5. Generate kunci enkripsi unik aplikasi Laravel
 php artisan key:generate
 
-# 6. Buat tautan simbolik direktori penyimpanan foto
+# 6. Buat tautan simbolik direktori penyimpanan foto produk
 php artisan storage:link
 
-# 7. Jalankan migrasi tabel basis data dan data seeding awal
+# 7. Eksekusi migrasi skema tabel database dan data awal (seeding)
 php artisan migrate --seed
 
-# 8. Pasang dependensi JavaScript & lakukan build aset frontend
+# 8. Pasang dependensi front-end dan lakukan build aset
 npm install
 npm run build
 
@@ -225,7 +224,7 @@ npm run build
 php artisan serve
 ```
 
-*Setelah server berjalan, buka browser dan akses aplikasi melalui tautan:* **[http://localhost:8000](http://localhost:8000)**.
+> Akses aplikasi melalui web browser pada alamat: **[http://localhost:8000](http://localhost:8000)**.
 
 ---
 
@@ -233,7 +232,7 @@ php artisan serve
 
 ### Visualisasi Entity Relationship Diagram
 
-![ERD Blush Boutique](link-gambar-erd-disini)
+![ERD Blush Boutique](link-gambar)
 
 ```mermaid
 erDiagram
@@ -353,13 +352,13 @@ erDiagram
 
 ### Penjelasan Relasi Antar Tabel (Eloquent ORM)
 
-- **`Category hasMany Products` / `Product belongsTo Category`**: Setiap kategori busana mengelompokkan banyak varian produk busana.
-- **`Supplier hasMany Purchases` / `Purchase belongsTo Supplier`**: Pemasok dapat memiliki banyak transaksi faktur pembelian pasokan masuk.
-- **`User hasMany Sales` & `User hasMany Purchases`**: Menghubungkan akun staf kasir/admin yang bertanggung jawab memproses transaksi penjualan maupun pembelian.
-- **`Customer hasMany Sales` / `Sale belongsTo Customer`**: Setiap pelanggan member dapat memiliki riwayat belanja berulang. Relasi bersifat `nullable` (`nullOnDelete`) untuk tetap melayani pembeli langsung non-member (*walk-in*).
-- **`Sale hasMany SaleItems` / `SaleItem belongsTo Sale`**: Satu faktur penjualan kasir menampung rincian beberapa baris item pakaian yang dibeli.
-- **`Purchase hasMany PurchaseItems` / `PurchaseItem belongsTo Purchase`**: Satu transaksi restock masuk menampung rincian beberapa baris item pakaian yang dipasok dari supplier.
-- **`Product hasMany SaleItems` & `Product hasMany PurchaseItems`**: Setiap unit produk busana terhubung dengan riwayat kuantitas keluar (penjualan) dan kuantitas masuk (pembelian).
+- **`Category hasMany Products` (`Product belongsTo Category`)**: Satu kategori busana mengelompokkan banyak varian produk pakaian.
+- **`Supplier hasMany Purchases` (`Purchase belongsTo Supplier`)**: Satu pemasok grosir dapat memiliki banyak riwayat transaksi faktur restock masuk.
+- **`User hasMany Sales` & `User hasMany Purchases`**: Menghubungkan akun staf kasir/admin yang bertanggung jawab mencatat transaksi penjualan dan pembelian.
+- **`Customer hasMany Sales` (`Sale belongsTo Customer`)**: Setiap pelanggan terdaftar dapat memiliki banyak riwayat transaksi. Relasi ini bersifat `nullable` (`nullOnDelete`) sehingga kasir tetap leluasa melayani pembeli langsung non-member (*Walk-in Customer*).
+- **`Sale hasMany SaleItems` (`SaleItem belongsTo Sale`)**: Satu faktur penjualan kasir menampung rincian beberapa item busana yang terjual.
+- **`Purchase hasMany PurchaseItems` (`PurchaseItem belongsTo Purchase`)**: Satu faktur restock menampung rincian beberapa item busana yang dibeli dari supplier.
+- **`Product hasMany SaleItems` & `Product hasMany PurchaseItems`**: Setiap produk busana terhubung dengan riwayat keluar masuk kuantitas stoknya.
 
 ---
 
@@ -371,15 +370,9 @@ erDiagram
 ### 2. Transaksi Kasir & Cetak Struk Penjualan
 ![Screenshot Transaksi](link-gambar)
 
-### 3. Etalase Katalog Web Publik
-![Screenshot Katalog Publik](link-gambar)
-
-### 4. Manajemen Master Data Busana
-![Screenshot Master Data](link-gambar)
-
 ---
 
-## 🎨 Palet Desain Antarmuka (Aesthetic Soft Pastel)
+## 🎨 Palet Warna Antarmuka (Aesthetic Soft Pastel)
 
 - 🌸 **Blush Pink Primary**: `#F27893` / `#E54D71`
 - 🍬 **Pastel Background**: `#FAF5F7` / `#FFF0F3`
@@ -392,7 +385,7 @@ erDiagram
 
 ## 🧪 Hasil Pengujian Unit & Fitur (PHPUnit)
 
-Proyek ini telah melalui pengujian otomatis (*Automated Feature Testing*) untuk memastikan seluruh alur transaksi berjalan bebas kesalahan:
+Pengujian fitur otomatis dijalankan untuk memverifikasi fungsionalitas logika transaksi dan keamanan:
 
 ```bash
 php artisan test
@@ -431,5 +424,5 @@ php artisan test
 
 ## 📄 Lisensi & Hak Cipta
 
-Proyek ini dikembangkan oleh **Safira Azahra Saragih** untuk keperluan pemenuhan **Ujian Tengah Semester (UTS) mata kuliah Web Programming 2**.  
+Proyek ini dikembangkan untuk pemenuhan **Ujian Tengah Semester (UTS) mata kuliah Web Programming 2**.  
 Hak Cipta &copy; 2026 **Blush Boutique Web**. Seluruh hak cipta dilindungi undang-undang.
