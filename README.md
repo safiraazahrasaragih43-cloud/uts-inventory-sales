@@ -232,7 +232,7 @@ php artisan serve
 
 ### Visualisasi Entity Relationship Diagram
 
-![ERD Blush Boutique](link-gambar)
+![ERD Blush Boutique](./docs/images/erd.png)
 
 ```mermaid
 erDiagram
@@ -365,10 +365,10 @@ erDiagram
 ## 📸 Application Screenshots
 
 ### 1. Dashboard Utama & Indikator Stok
-![Screenshot Dashboard](link-gambar)
+![Screenshot Dashboard](./docs/images/dashboard.png)
 
 ### 2. Transaksi Kasir & Cetak Struk Penjualan
-![Screenshot Transaksi](link-gambar)
+![Screenshot Transaksi](./docs/images/transaksi.png)
 
 ---
 
