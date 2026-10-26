@@ -61,9 +61,15 @@ Dilindungi oleh middleware khusus [`RoleMiddleware`](app/Http/Middleware/RoleMid
 
 ### 6. 🌸 Master Data Pelanggan (Customers) & Integrasi Kasir
 - **CRUD Pelanggan Lengkap**: Kelola basis data pelanggan tetap/member (Nama, No. Telepon/WA, Email, dan Alamat).
-- **Integrasi Dropdown Kasir POS**: Form kasir penjualan dilengkapi pemilih pelanggan dengan fitur sinkronisasi otomatis nama nota.
+- **Halaman Profil & Analisis Belanja (`/customers/{customer}`)**: Halaman khusus profil pelanggan yang menampilkan:
+  - Informasi kontak lengkap dengan tombol aksi 1-Klik chat WhatsApp (`wa.me`) dan kirim email.
+  - Kartu metrik KPI pelanggan: Total Akumulasi Belanja (Rp), Total Frekuensi Transaksi Kasir, Total Unit Pcs Busana yang Dibeli, dan Nilai Rata-rata Belanja per Kunjungan.
+  - Tabel riwayat seluruh faktur penjualan pelanggan dengan rincian busana yang dibeli dan tautan langsung ke cetak nota resmi.
+  - Tombol aksi cepat **"Transaksi Kasir Baru"** yang otomatis mengaitkan pelanggan ke form kasir.
+- **Integrasi Dropdown Kasir POS**: Form kasir penjualan dilengkapi pemilih pelanggan dengan sinkronisasi otomatis nama nota serta dukungan URL query parameter `?customer_id=...`.
 - **Dukungan Pembeli Umum (*Walk-in Customer*)**: Kolom relasi bersifat `nullable` sehingga kasir tetap leluasa melayani pembeli langsung tanpa keharusan mendaftarkan akun pelanggan.
 - **Badge Member & Riwayat Belanja**: Nota dan riwayat transaksi menampilkan status member dan riwayat total pembelian tiap pelanggan secara akurat.
+- **Navigasi Terintegrasi Lintas Modul**: Tautan profil pelanggan disematkan langsung pada tabel riwayat penjualan, halaman faktur nota kasir, dan feed transaksi terbaru di dashboard utama.
 - **Bebas Masalah N+1 Query**: Eager loading (`with(['customer', 'user', 'items.product'])`) diterapkan di seluruh daftar transaksi penjualan.
 
 ### 7. 📑 Laporan Keuangan & Valuasi Persediaan (Khusus Admin)
@@ -73,32 +79,160 @@ Dilindungi oleh middleware khusus [`RoleMiddleware`](app/Http/Middleware/RoleMid
 
 ---
 
-## 🏛️ Arsitektur & Relasi Database
+## 🏛️ Arsitektur & Relasi Database (ERD)
 
-Aplikasi ini menggunakan relasi Eloquent yang terstruktur:
+Aplikasi **BlushBoutique** menggunakan basis data relasional ternormalisasi dengan integritas referensial yang ketat, menghubungkan master data pengguna (admin/staff), pelanggan (*customer*), kategori produk, supplier persediaan, stok busana, hingga transaksi kasir dan pembelian masuk.
 
+### 1. 📊 Entity Relationship Diagram (ERD)
+
+Diagram ERD interaktif berikut dirender otomatis menggunakan standar **Mermaid**:
+
+```mermaid
+erDiagram
+    CATEGORIES ||--o{ PRODUCTS : "mengelompokkan (1:N)"
+    SUPPLIERS ||--o{ PURCHASES : "memasok stok (1:N)"
+    USERS ||--o{ PURCHASES : "mencatat restock (1:N)"
+    PURCHASES ||--|{ PURCHASE_ITEMS : "memiliki rincian (1:N)"
+    PRODUCTS ||--o{ PURCHASE_ITEMS : "dipesan dalam (1:N)"
+
+    USERS ||--o{ SALES : "memproses kasir (1:N)"
+    CUSTOMERS ||--o{ SALES : "berbelanja (1:N, optional)"
+    SALES ||--|{ SALE_ITEMS : "memiliki rincian (1:N)"
+    PRODUCTS ||--o{ SALE_ITEMS : "terjual dalam (1:N)"
+
+    USERS {
+        bigint id PK
+        string name
+        string email UK
+        string password
+        string role "admin / staff"
+        timestamp email_verified_at "nullable"
+        string remember_token "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    CUSTOMERS {
+        bigint id PK
+        string name
+        string phone "nullable"
+        string email "nullable"
+        text address "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    CATEGORIES {
+        bigint id PK
+        string name
+        string slug UK
+        text description "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    SUPPLIERS {
+        bigint id PK
+        string name
+        string contact_person "nullable"
+        string phone
+        string email "nullable"
+        text address "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    PRODUCTS {
+        bigint id PK
+        bigint category_id FK
+        string name
+        string sku UK
+        text description "nullable"
+        decimal purchase_price "15,2"
+        decimal selling_price "15,2"
+        integer stock
+        integer minimum_stock
+        string image "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    SALES {
+        bigint id PK
+        string invoice_number UK
+        bigint user_id FK
+        bigint customer_id FK "nullable, nullOnDelete"
+        string customer_name
+        datetime sale_date
+        decimal total_amount "15,2"
+        string payment_method
+        text notes "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    SALE_ITEMS {
+        bigint id PK
+        bigint sale_id FK "cascadeOnDelete"
+        bigint product_id FK "cascadeOnDelete"
+        integer quantity
+        decimal unit_price "15,2"
+        decimal subtotal "15,2"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    PURCHASES {
+        bigint id PK
+        string invoice_number UK
+        bigint supplier_id FK "cascadeOnDelete"
+        bigint user_id FK "cascadeOnDelete"
+        date purchase_date
+        decimal total_amount "15,2"
+        text notes "nullable"
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    PURCHASE_ITEMS {
+        bigint id PK
+        bigint purchase_id FK "cascadeOnDelete"
+        bigint product_id FK "cascadeOnDelete"
+        integer quantity
+        decimal unit_price "15,2"
+        decimal subtotal "15,2"
+        timestamp created_at
+        timestamp updated_at
+    }
 ```
-[Categories] 1 ────< N [Products]
-                           │
-             ┌─────────────┴─────────────┐
-             ▼                           ▼
-    [PurchaseItems] N            [SaleItems] N
-             │                           │
-             ▼ 1                         ▼ 1
-       [Purchases] N                 [Sales] N ◄──── 1 [Customers] (nullable)
-             │   │                       │
-             │   └──────┐         ┌──────┘
-             ▼ 1        ▼ 1       ▼ 1
-        [Suppliers]    [Users (Admin/Staff)]
-```
 
-- **`users`**: `id`, `name`, `email`, `password`, `role` (`admin`/`staff`).
-- **`customers`**: `id`, `name`, `phone`, `email`, `address`, `timestamps`.
-- **`categories`**: `id`, `name`, `slug`, `description`.
-- **`suppliers`**: `id`, `name`, `contact_person`, `phone`, `email`, `address`.
-- **`products`**: `id`, `category_id`, `name`, `sku` (unik), `purchase_price`, `selling_price`, `stock`, `minimum_stock`, `image`, `description`.
-- **`purchases`** & **`purchase_items`**: Faktur restock masuk dari supplier ke inventory toko.
-- **`sales`** & **`sale_items`**: Faktur kasir penjualan pakaian (`customer_id` nullable, `customer_name`, `total_amount`, dll).
+---
+
+### 2. 🗂️ Kamus Data & Relasi Entitas
+
+| Nama Tabel | Peran Entitas | Foreign Key (FK) Terhubung | Integritas & Keterangan Relasi |
+| :--- | :--- | :--- | :--- |
+| **`users`** | Akun Staff Kasir & Admin Pemilik | - | `1:N` ke `sales` (kasir yang melayani) dan `purchases` (staff pencatat). |
+| **`customers`** | Basis Data Pelanggan Setia / Member | - | `1:N` ke `sales` (`customer_id` bersifat `nullable`, `nullOnDelete`). Jika data member dihapus, riwayat penjualan tetap aman tersimpan. |
+| **`categories`** | Klasifikasi Busana (*Dress, Blouse, dll*) | - | `1:N` ke `products` (`cascadeOnDelete`). |
+| **`suppliers`** | Pemasok / Produsen Grosir Pakaian | - | `1:N` ke `purchases` (`cascadeOnDelete`). |
+| **`products`** | Master Busana & Pengendali Stok Fisik | `category_id` $\rightarrow$ `categories.id` | Memiliki SKU unik. Terhubung ke transaksi melalui `sale_items` dan `purchase_items`. |
+| **`sales`** | Faktur Transaksi Penjualan Kasir POS | `user_id` $\rightarrow$ `users.id`<br>`customer_id` $\rightarrow$ `customers.id` | Menyimpan nomor faktur unik (`SLS-YYYYMMDD-XXXXX`), metode pembayaran (Tunai, QRIS, Transfer, Debit), dan total nilai belanja. |
+| **`sale_items`** | Detail Item Pakaian Terjual per Faktur | `sale_id` $\rightarrow$ `sales.id`<br>`product_id` $\rightarrow$ `products.id` | Menyimpan kuantitas, harga jual saat transaksi, dan subtotal per baris item busana. |
+| **`purchases`** | Faktur Pembelian Stok Masuk (*Restock*) | `supplier_id` $\rightarrow$ `suppliers.id`<br>`user_id` $\rightarrow$ `users.id` | Mencatat transaksi pembelian grosir dari supplier ke gudang toko. |
+| **`purchase_items`** | Detail Item Busana yang Direstock | `purchase_id` $\rightarrow$ `purchases.id`<br>`product_id` $\rightarrow$ `products.id` | Menampung kuantitas masuk, harga modal satuan, dan subtotal pembelian. |
+
+---
+
+### 3. 🛡️ Kebijakan Integritas Transaksi & Stok
+1. **Otomatisasi Stok (*Inventory Consistency*)**:
+   - Transaksi Penjualan (`sales` $\rightarrow$ `sale_items`) secara otomatis memanggil `Product::decrement('stock', $qty)`.
+   - Transaksi Restock Masuk (`purchases` $\rightarrow$ `purchase_items`) secara otomatis memanggil `Product::increment('stock', $qty)`.
+2. **Pencegahan Kondisi Balapan (*Race-Condition Lock*)**:
+   - Seluruh mutasi stok dibungkus dalam `DB::transaction()` dan setiap baris produk dikunci dengan `Product::lockForUpdate()` saat validasi stok.
+3. **Fleksibilitas Pelanggan**:
+   - Kasir dapat memilih pelanggan member terdaftar untuk akumulasi statistik belanja, atau melayani pembeli langsung (*Walk-in Customer*) tanpa hambatan.
+   - Kolom `customer_id` pada tabel `sales` menggunakan aturan `nullOnDelete()`, sehingga integritas riwayat keuangan toko tidak akan rusak jika sewaktu-waktu profil pelanggan dihapus.
 
 ---
 
@@ -195,6 +329,7 @@ php artisan test
 
    PASS  Tests\Feature\CustomerTest
   ✓ authenticated user can view customers list
+  ✓ authenticated user can view customer details
   ✓ can create new customer
   ✓ can update customer
   ✓ can delete customer
@@ -204,7 +339,7 @@ php artisan test
    PASS  Tests\Feature\ExampleTest
   ✓ the application returns a successful response
 
-  Tests:    15 passed (60 assertions)
+  Tests:    16 passed (65 assertions)
 ```
 
 ---

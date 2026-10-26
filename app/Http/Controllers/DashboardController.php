@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\Sale;
@@ -22,6 +23,7 @@ class DashboardController extends Controller
         $lowStockProductsCount = Product::whereColumn('stock', '<=', 'minimum_stock')->count();
         $totalCategories = Category::count();
         $totalSuppliers = Supplier::count();
+        $totalCustomers = Customer::count();
 
         // Sales Metrics
         $totalSalesCount = Sale::count();
@@ -61,6 +63,7 @@ class DashboardController extends Controller
             'lowStockProductsCount',
             'totalCategories',
             'totalSuppliers',
+            'totalCustomers',
             'totalSalesCount',
             'totalSalesAmount',
             'todaySalesAmount',

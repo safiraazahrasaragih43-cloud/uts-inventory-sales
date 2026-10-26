@@ -33,6 +33,23 @@ class CustomerTest extends TestCase
     }
 
     /**
+     * Test authenticated user can view customer details, profile, and purchase history.
+     */
+    public function test_authenticated_user_can_view_customer_details(): void
+    {
+        $staff = User::where('email', 'staff@blushboutique.com')->first();
+        $customer = Customer::first();
+
+        $response = $this->actingAs($staff)->get(route('customers.show', $customer));
+
+        $response->assertStatus(200);
+        $response->assertSee($customer->name);
+        $response->assertSee('Detail & Riwayat Belanja Pelanggan');
+        $response->assertSee('Total Akumulasi Belanja');
+        $response->assertSee('Riwayat Transaksi Belanja');
+    }
+
+    /**
      * Test create new customer with validation.
      */
     public function test_can_create_new_customer(): void

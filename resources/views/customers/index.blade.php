@@ -58,7 +58,9 @@
                                         {{ strtoupper(substr($customer->name, 0, 1)) }}
                                     </div>
                                     <div>
-                                        <span class="font-bold text-gray-900 block">{{ $customer->name }}</span>
+                                        <a href="{{ route('customers.show', $customer) }}" class="font-bold text-gray-900 hover:text-blush-600 transition-colors block">
+                                            {{ $customer->name }}
+                                        </a>
                                         <span class="text-[10px] text-gray-400">Terdaftar {{ $customer->created_at ? $customer->created_at->format('d M Y') : '-' }}</span>
                                     </div>
                                 </div>
@@ -77,11 +79,14 @@
                                 {{ $customer->address ?: '-' }}
                             </td>
                             <td class="py-3.5 px-4 text-center">
-                                <span class="px-2.5 py-1 rounded-full {{ $customer->sales_count > 0 ? 'bg-blush-100 text-blush-900' : 'bg-gray-100 text-gray-600' }} font-semibold text-[10px]">
+                                <a href="{{ route('customers.show', $customer) }}" class="inline-block px-2.5 py-1 rounded-full {{ $customer->sales_count > 0 ? 'bg-blush-100 text-blush-900 hover:bg-blush-200' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }} font-semibold text-[10px] transition-colors" title="Lihat riwayat transaksi">
                                     {{ $customer->sales_count }} transaksi
-                                </span>
+                                </a>
                             </td>
                             <td class="py-3.5 px-4 text-right space-x-1 whitespace-nowrap">
+                                <a href="{{ route('customers.show', $customer) }}" class="inline-block p-1.5 rounded-lg bg-blush-50 hover:bg-blush-100 text-blush-700" title="Lihat Profil & Riwayat Belanja">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                </a>
                                 <a href="{{ route('customers.edit', $customer) }}" class="inline-block p-1.5 rounded-lg bg-blush-100 hover:bg-blush-200 text-blush-800" title="Edit Data Pelanggan">
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                 </a>

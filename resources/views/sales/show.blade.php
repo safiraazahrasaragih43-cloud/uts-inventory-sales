@@ -47,7 +47,9 @@
                 <p class="text-gray-400">Nama Pelanggan:</p>
                 @if($sale->customer)
                     <p class="font-semibold text-gray-800">
-                        {{ $sale->customer->name }}
+                        <a href="{{ route('customers.show', $sale->customer) }}" class="text-blush-700 hover:text-blush-900 underline" title="Lihat Profil & Riwayat Pelanggan">
+                            {{ $sale->customer->name }}
+                        </a>
                         <span class="inline-block text-[9px] px-1.5 py-0.5 rounded-full bg-blush-100 text-blush-700 font-bold border border-blush-200">Member</span>
                     </p>
                     @if($sale->customer->phone)

@@ -31,7 +31,7 @@
                     <select name="customer_id" id="customerSelect" class="w-full px-3 py-2 bg-white rounded-xl border border-blush-200 focus:outline-none focus:ring-2 focus:ring-blush-400 text-xs text-gray-800">
                         <option value="" data-name="Pelanggan Walk-in">Walk-in Customer (Non-Member)</option>
                         @foreach($customers as $customer)
-                            <option value="{{ $customer->id }}" data-name="{{ $customer->name }}" data-phone="{{ $customer->phone }}" {{ old('customer_id') == $customer->id ? 'selected' : '' }}>
+                            <option value="{{ $customer->id }}" data-name="{{ $customer->name }}" data-phone="{{ $customer->phone }}" {{ (old('customer_id', request('customer_id')) == $customer->id) ? 'selected' : '' }}>
                                 {{ $customer->name }} {{ $customer->phone ? '• ' . $customer->phone : '' }}
                             </option>
                         @endforeach
@@ -238,9 +238,18 @@
         });
     }
 
-    // Add first row on load
+    // Add first row on load & sync pre-selected customer
     window.addEventListener('DOMContentLoaded', () => {
         addRow();
+        if (customerSelect && customerSelect.value && customerNameInput) {
+            const selectedOpt = customerSelect.options[customerSelect.selectedIndex];
+            if (selectedOpt && selectedOpt.value) {
+                const name = selectedOpt.getAttribute('data-name');
+                if (name && (customerNameInput.value === 'Pelanggan Walk-in' || !customerNameInput.value)) {
+                    customerNameInput.value = name;
+                }
+            }
+        }
     });
 </script>
 @endsection

@@ -85,7 +85,9 @@
                             <td class="py-3.5 px-4 font-medium text-gray-800">
                                 @if($sale->customer)
                                     <div class="flex items-center space-x-1.5">
-                                        <span class="font-semibold text-gray-900">{{ $sale->customer->name }}</span>
+                                        <a href="{{ route('customers.show', $sale->customer) }}" class="font-semibold text-blush-700 hover:text-blush-900 hover:underline" title="Lihat profil & riwayat belanja">
+                                            {{ $sale->customer->name }}
+                                        </a>
                                         <span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-blush-100 text-blush-700 border border-blush-200">Member</span>
                                     </div>
                                     @if($sale->customer->phone)

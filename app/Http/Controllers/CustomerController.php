@@ -60,6 +60,25 @@ class CustomerController extends Controller
     }
 
     /**
+     * Display the specified customer along with purchase history and metrics.
+     */
+    public function show(Customer $customer)
+    {
+        $customer->loadCount('sales');
+        $customer->load(['sales' => function ($query) {
+            $query->with(['user', 'items.product'])->latest('sale_date');
+        }]);
+
+        $totalSpent = $customer->sales->sum('total_amount');
+        $totalItemsCount = $customer->sales->sum(function ($sale) {
+            return $sale->items->sum('quantity');
+        });
+        $averageSpent = $customer->sales_count > 0 ? ($totalSpent / $customer->sales_count) : 0;
+
+        return view('customers.show', compact('customer', 'totalSpent', 'totalItemsCount', 'averageSpent'));
+    }
+
+    /**
      * Show the form for editing the specified customer.
      */
     public function edit(Customer $customer)

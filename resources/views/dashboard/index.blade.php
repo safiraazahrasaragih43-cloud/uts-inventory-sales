@@ -95,6 +95,10 @@
                     <span>Tambah Produk Baru</span>
                 </a>
             @endif
+            <a href="{{ route('customers.index') }}" class="px-4 py-2.5 rounded-xl bg-blush-50 text-blush-800 hover:bg-blush-100 transition-colors border border-blush-200 text-xs font-semibold flex items-center space-x-2 shadow-sm">
+                <svg class="w-4 h-4 text-blush-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                <span>Pelanggan ({{ $totalCustomers }})</span>
+            </a>
         </div>
     </div>
 
@@ -171,7 +175,12 @@
                                 <span class="text-[10px] px-2 py-0.5 rounded-full bg-white text-gray-600 border border-blush-200">{{ $sale->payment_method }}</span>
                             </div>
                             <p class="text-xs text-gray-600 mt-0.5">
-                                {{ $sale->customer_name }} • {{ $sale->sale_date->translatedFormat('d M H:i') }}
+                                @if($sale->customer)
+                                    <a href="{{ route('customers.show', $sale->customer) }}" class="font-medium text-blush-700 hover:underline">{{ $sale->customer->name }}</a>
+                                @else
+                                    {{ $sale->customer_name }}
+                                @endif
+                                • {{ $sale->sale_date->translatedFormat('d M H:i') }}
                             </p>
                         </div>
                         <div class="text-right">
