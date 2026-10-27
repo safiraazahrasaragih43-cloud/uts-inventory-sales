@@ -1,0 +1,11 @@
+<?php
+$ch = curl_init('https://www.pexels.com/search/hijab/');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+$html = curl_exec($ch);
+curl_close($ch);
+echo "Length: " . strlen($html) . "\n";
+echo substr($html, 0, 500) . "\n";
+preg_match_all('/https:\/\/images\.pexels\.com\/photos\/[0-9]+\/[a-zA-Z0-9\-_.]+\.jpeg/', $html, $matches);
+print_r(array_unique(array_slice($matches[0], 0, 5)));

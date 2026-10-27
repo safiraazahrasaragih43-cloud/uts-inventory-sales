@@ -76,14 +76,6 @@ class CatalogController extends Controller
     {
         $product->load('category');
 
-        $waNumber = '6281234567890';
-        $message = "Halo BlushBoutique, saya tertarik memesan produk berikut:%0A"
-            . "- Produk: {$product->name}%0A"
-            . "- SKU: {$product->sku}%0A"
-            . "- Harga: {$product->formatted_selling_price}%0A"
-            . "Apakah stok masih tersedia?";
-        $waUrl = "https://wa.me/{$waNumber}?text={$message}";
-
-        return view('catalog.show', compact('product', 'waUrl'));
+        return view('catalog.show', compact('product'));
     }
 }

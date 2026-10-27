@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
@@ -21,6 +22,11 @@ use Illuminate\Support\Facades\Route;
 // 1. Tampilan Publik untuk Pengunjung / Pelanggan (Tanpa Perlu Login)
 Route::get('/', [CatalogController::class, 'index'])->name('catalog.index');
 Route::get('/catalog/{product}', [CatalogController::class, 'show'])->name('catalog.show');
+
+// Alur Pemesanan Publik COD (Cash on Delivery)
+Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
+Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+Route::get('/checkout/success/{sale:invoice_number}', [CheckoutController::class, 'success'])->name('checkout.success');
 
 // 2. Autentikasi Admin & Staff
 Route::middleware('guest')->group(function () {

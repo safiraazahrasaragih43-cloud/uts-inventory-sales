@@ -27,12 +27,8 @@ class BlushBoutiqueTest extends TestCase
         $response = $this->get('/');
         $response->assertStatus(200);
         $response->assertSee('BlushBoutique');
-        $response->assertSee('Koleksi Pakaian Pilihan');
-        $response->assertSee('Pesan via WA');
+        $response->assertSee('Pesan Sekarang');
         $response->assertSee('Tambah ke Keranjang');
-        $response->assertSee('Gaun Pesta Maroon');
-        $response->assertSee('Kemeja Flanel Oversize');
-        $response->assertSee('Blus Sutra Floral');
         $response->assertSee('fashion-img-container');
     }
 
@@ -45,7 +41,7 @@ class BlushBoutiqueTest extends TestCase
         $response = $this->get('/catalog/' . $product->id);
         $response->assertStatus(200);
         $response->assertSee($product->name);
-        $response->assertSee('Pesan via WhatsApp Sekarang');
+        $response->assertSee('Pesan Sekarang (COD / Bayar di Tempat)');
     }
 
     /**
@@ -182,5 +178,109 @@ class BlushBoutiqueTest extends TestCase
         $this->assertNotNull($product);
         $this->assertNotNull($product->image);
         \Illuminate\Support\Facades\Storage::disk('public')->assertExists($product->image);
+    }
+
+    /**
+     * Test Checkout COD page loads properly with and without direct product.
+     */
+    public function test_checkout_cod_page_renders_properly(): void
+    {
+        $response = $this->get('/checkout');
+        $response->assertStatus(200);
+        $response->assertSee('Alamat Pengiriman Paket');
+        $response->assertSee('Metode Pembayaran');
+        $response->assertSee('COD (Cash on Delivery');
+
+        $product = Product::first();
+        $responseWithDirect = $this->get('/checkout?product_id=' . $product->id);
+        $responseWithDirect->assertStatus(200);
+        $responseWithDirect->assertSee($product->name);
+        $responseWithDirect->assertSee('Pilih Ukuran Busana:');
+    }
+
+    /**
+     * Test Checkout COD form submission saves transaction and automatically decrements stock via DB::transaction.
+     */
+    public function test_checkout_cod_stores_sale_and_sale_items_and_decrements_product_stock(): void
+    {
+        $product = Product::where('stock', '>=', 5)->first();
+        $initialStock = $product->stock;
+        $orderQty = 2;
+
+        $response = $this->post('/checkout', [
+            'customer_name' => 'Safira Pelanggan',
+            'phone' => '081299988877',
+            'address' => 'Jl. Anggrek Merah No. 45, Bandung',
+            'notes' => 'Tolong telepon saat sampai di depan gerbang',
+            'items' => [
+                [
+                    'product_id' => $product->id,
+                    'quantity' => $orderQty,
+                    'size' => 'M',
+                ]
+            ]
+        ]);
+
+        // Harus redirect ke checkout.success/{invoice}
+        $response->assertStatus(302);
+        $response->assertSessionHas('success');
+
+        // Pastikan stok produk berkurang tepat 2 pcs
+        $product->refresh();
+        $this->assertEquals($initialStock - $orderQty, $product->stock);
+
+        // Pastikan record di tabel sales dibuat
+        $this->assertDatabaseHas('sales', [
+            'customer_name' => 'Safira Pelanggan',
+            'payment_method' => 'COD (Bayar di Tempat)',
+            'total_amount' => $product->selling_price * $orderQty,
+        ]);
+
+        // Ambil sale transaksi COD yang baru dibuat
+        $latestSale = \App\Models\Sale::where('customer_name', 'Safira Pelanggan')->latest('id')->first();
+        $this->assertNotNull($latestSale);
+        $this->assertStringStartsWith('SLS-COD-', $latestSale->invoice_number);
+
+        // Pastikan record di tabel sale_items dibuat
+        $this->assertDatabaseHas('sale_items', [
+            'sale_id' => $latestSale->id,
+            'product_id' => $product->id,
+            'quantity' => $orderQty,
+            'unit_price' => $product->selling_price,
+            'subtotal' => $product->selling_price * $orderQty,
+        ]);
+
+        // Pastikan halaman faktur sukses dapat diakses
+        $successResponse = $this->get('/checkout/success/' . $latestSale->invoice_number);
+        $successResponse->assertStatus(200);
+        $successResponse->assertSee($latestSale->invoice_number);
+        $successResponse->assertSee('Safira Pelanggan');
+        $successResponse->assertSee($product->name);
+    }
+
+    /**
+     * Test Checkout COD rejects when product stock is insufficient.
+     */
+    public function test_checkout_cod_rejects_when_product_stock_is_insufficient(): void
+    {
+        $product = Product::first();
+        $product->update(['stock' => 1]);
+
+        $response = $this->post('/checkout', [
+            'customer_name' => 'Safira Pelanggan',
+            'phone' => '081299988877',
+            'address' => 'Jl. Anggrek Merah No. 45, Bandung',
+            'items' => [
+                [
+                    'product_id' => $product->id,
+                    'quantity' => 10, // melebihi sisa stok 1
+                    'size' => 'M',
+                ]
+            ]
+        ]);
+
+        $response->assertSessionHas('error');
+        $product->refresh();
+        $this->assertEquals(1, $product->stock); // stok tidak berubah
     }
 }

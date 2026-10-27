@@ -1,0 +1,340 @@
+{
+  "prod_1_rose_floral_dress": [
+    {
+      "idx": 0,
+      "alt": "Woman Trendy Lifestyle Relax Lonely Concept",
+      "url": "https://plus.unsplash.com/premium_photo-1723780956289-1893c7f074f7?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_1_rose_floral_dress_0.jpg"
+    },
+    {
+      "idx": 1,
+      "alt": "Stylish woman in green dress enjoys the music with headphones and cell phone dancing in the living room at home",
+      "url": "https://plus.unsplash.com/premium_photo-1683134636763-fffd465d3673?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_1_rose_floral_dress_1.jpg"
+    },
+    {
+      "idx": 2,
+      "alt": "woman in white floral dress wearing sunglasses standing on wooden bridge",
+      "url": "https://images.unsplash.com/photo-1629354447905-1d5ec432f4ce?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_1_rose_floral_dress_2.jpg"
+    },
+    {
+      "idx": 3,
+      "alt": "a woman in a red dress",
+      "url": "https://images.unsplash.com/photo-1655205772237-42781867ea22?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_1_rose_floral_dress_3.jpg"
+    }
+  ],
+  "prod_2_dusty_pink_satin_dress": [
+    {
+      "idx": 0,
+      "alt": "Smooth pink satin fabric with soft folds and highlights",
+      "url": "https://plus.unsplash.com/premium_photo-1772492086686-8a346bf5f4b1?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_2_dusty_pink_satin_dress_0.jpg"
+    },
+    {
+      "idx": 1,
+      "alt": "Couple walking in elegant attire on patterned floor",
+      "url": "https://images.unsplash.com/photo-1763888647863-d6d0c7383151?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_2_dusty_pink_satin_dress_1.jpg"
+    },
+    {
+      "idx": 2,
+      "alt": "A woman with dark hair wearing a pale satin slip dress against linen curtains",
+      "url": "https://plus.unsplash.com/premium_photo-1661657720305-ec3a988c8763?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_2_dusty_pink_satin_dress_2.jpg"
+    },
+    {
+      "idx": 3,
+      "alt": "a woman in a pink dress standing with her hands on her hips",
+      "url": "https://images.unsplash.com/photo-1708121454064-6bc7b367708a?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_2_dusty_pink_satin_dress_3.jpg"
+    }
+  ],
+  "prod_3_peach_ribbon_blouse": [
+    {
+      "idx": 0,
+      "alt": "a woman in a pink dress posing for a picture",
+      "url": "https://plus.unsplash.com/premium_photo-1674069719632-2529871c72d6?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_3_peach_ribbon_blouse_0.jpg"
+    },
+    {
+      "idx": 1,
+      "alt": "a woman in a pink dress looking at herself in the mirror",
+      "url": "https://plus.unsplash.com/premium_photo-1705887332801-d586b67cb9f7?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_3_peach_ribbon_blouse_1.jpg"
+    },
+    {
+      "idx": 2,
+      "alt": "A woman sitting on steps in a pink and blue sari",
+      "url": "https://images.unsplash.com/photo-1730037656263-0b8b94ab2373?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_3_peach_ribbon_blouse_2.jpg"
+    },
+    {
+      "idx": 3,
+      "alt": "A pink and white blouse is displayed",
+      "url": "https://images.unsplash.com/photo-1745381351127-9289f79b5cfd?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_3_peach_ribbon_blouse_3.jpg"
+    }
+  ],
+  "prod_4_victorian_lace_shirt": [
+    {
+      "idx": 0,
+      "alt": "Close-up of a woman's hand on a white lace sleeve",
+      "url": "https://plus.unsplash.com/premium_photo-1768673904126-848631dfbf50?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_4_victorian_lace_shirt_0.jpg"
+    },
+    {
+      "idx": 1,
+      "alt": "Woman in a delicate lace blouse with pearl buttons",
+      "url": "https://plus.unsplash.com/premium_photo-1768673904684-1bf154847ddd?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_4_victorian_lace_shirt_1.jpg"
+    },
+    {
+      "idx": 2,
+      "alt": "Woman in white blouse reflected in ornate mirror",
+      "url": "https://images.unsplash.com/photo-1772915516567-c1065e48d8cd?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_4_victorian_lace_shirt_2.jpg"
+    },
+    {
+      "idx": 3,
+      "alt": "a woman standing in front of a tree wearing a white shirt",
+      "url": "https://images.unsplash.com/photo-1708013039663-13176399c6fe?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_4_victorian_lace_shirt_3.jpg"
+    }
+  ],
+  "prod_5_rose_pleated_skirt": [
+    {
+      "idx": 0,
+      "alt": "Pretty young woman using a mobile phone while walking on the street",
+      "url": "https://plus.unsplash.com/premium_photo-1683134359168-cb2395fc12b8?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_5_rose_pleated_skirt_0.jpg"
+    },
+    {
+      "idx": 1,
+      "alt": "A person wearing a beige vest and pinstriped shorts with hanging neckties",
+      "url": "https://plus.unsplash.com/premium_photo-1786855882532-27e433a13762?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_5_rose_pleated_skirt_1.jpg"
+    },
+    {
+      "idx": 2,
+      "alt": "woman in white dress holding basket of flowers",
+      "url": "https://images.unsplash.com/photo-1592723489889-e36149a5e7a0?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_5_rose_pleated_skirt_2.jpg"
+    },
+    {
+      "idx": 3,
+      "alt": "woman in black camisole top near vines",
+      "url": "https://images.unsplash.com/photo-1573638687899-e2758e4a373f?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_5_rose_pleated_skirt_3.jpg"
+    }
+  ],
+  "prod_6_cream_linen_culottes": [
+    {
+      "idx": 0,
+      "alt": "a woman in a white top and tan pants",
+      "url": "https://plus.unsplash.com/premium_photo-1675034372363-aefe8d1e35ca?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_6_cream_linen_culottes_0.jpg"
+    },
+    {
+      "idx": 1,
+      "alt": "Beach essentials: hat, sunglasses, and linen clothes on the sand",
+      "url": "https://plus.unsplash.com/premium_photo-1764419065289-b60aea88ee4d?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_6_cream_linen_culottes_1.jpg"
+    },
+    {
+      "idx": 2,
+      "alt": "a woman standing in front of a wooden door",
+      "url": "https://images.unsplash.com/photo-1682615826547-c33c4511df2e?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_6_cream_linen_culottes_2.jpg"
+    },
+    {
+      "idx": 3,
+      "alt": "a woman sitting in a chair with her legs crossed",
+      "url": "https://images.unsplash.com/photo-1632282005753-29f80ed13c93?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_6_cream_linen_culottes_3.jpg"
+    }
+  ],
+  "prod_7_lavender_cardigan": [
+    {
+      "idx": 0,
+      "alt": "a woman standing next to another woman in a pink sweater",
+      "url": "https://plus.unsplash.com/premium_photo-1695844418994-fb14fdc83713?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_7_lavender_cardigan_0.jpg"
+    },
+    {
+      "idx": 1,
+      "alt": "a woman in a white dress and a pink coat",
+      "url": "https://plus.unsplash.com/premium_photo-1695339146416-65bfe01ec18d?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_7_lavender_cardigan_1.jpg"
+    },
+    {
+      "idx": 2,
+      "alt": "A close up of a knitted sweater",
+      "url": "https://images.unsplash.com/photo-1737061336554-b94555f6d1d1?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_7_lavender_cardigan_2.jpg"
+    },
+    {
+      "idx": 3,
+      "alt": "a woman standing in a field of tall grass",
+      "url": "https://images.unsplash.com/photo-1642109371211-d357c4c421aa?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_7_lavender_cardigan_3.jpg"
+    }
+  ],
+  "prod_8_pink_cable_knit": [
+    {
+      "idx": 0,
+      "alt": "a woman wearing a pink sweater and earrings",
+      "url": "https://plus.unsplash.com/premium_photo-1706520001443-e099ad30b807?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_8_pink_cable_knit_0.jpg"
+    },
+    {
+      "idx": 1,
+      "alt": "a pink sweater hanging on a wooden hanger",
+      "url": "https://plus.unsplash.com/premium_photo-1705554519869-fdcebc4ba94b?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_8_pink_cable_knit_1.jpg"
+    },
+    {
+      "idx": 2,
+      "alt": "a woman in a pink sweater stands on rocks near the ocean",
+      "url": "https://images.unsplash.com/photo-1681419327414-2f74b926c53f?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_8_pink_cable_knit_2.jpg"
+    },
+    {
+      "idx": 3,
+      "alt": "a woman in a purple sweater holding a bouquet of flowers",
+      "url": "https://images.unsplash.com/photo-1687275160670-ca9efc88be04?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_8_pink_cable_knit_3.jpg"
+    }
+  ],
+  "prod_9_voile_square_hijab": [
+    {
+      "idx": 0,
+      "alt": "Pretty young Muslim woman in pink hijab looking at monitor in modern office",
+      "url": "https://plus.unsplash.com/premium_photo-1683133405779-081b5e4311e1?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_9_voile_square_hijab_0.jpg"
+    },
+    {
+      "idx": 1,
+      "alt": "woman in pink hijab standing",
+      "url": "https://images.unsplash.com/photo-1601931163331-1b7169e9962f?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_9_voile_square_hijab_1.jpg"
+    },
+    {
+      "idx": 2,
+      "alt": "Young pretty Muslim businesswoman in hijab, pink cardigan and pants standing by office door in front of camera and having tea or coffee",
+      "url": "https://plus.unsplash.com/premium_photo-1681489847451-0eaec69a0214?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_9_voile_square_hijab_2.jpg"
+    },
+    {
+      "idx": 3,
+      "alt": "a woman in a red dress holding a bouquet of flowers",
+      "url": "https://images.unsplash.com/photo-1662337034551-dadd66a698d8?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_9_voile_square_hijab_3.jpg"
+    }
+  ],
+  "prod_10_satin_silk_pashmina": [
+    {
+      "idx": 0,
+      "alt": "3d render, abstract background with waving floating pink silk drapery, wavy fashion wallpaper, falling cloth",
+      "url": "https://plus.unsplash.com/premium_photo-1681426360789-cf7cc33209cc?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_10_satin_silk_pashmina_0.jpg"
+    },
+    {
+      "idx": 1,
+      "alt": "a group of raw chicken",
+      "url": "https://images.unsplash.com/photo-1652385939737-3aa227420cb1?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_10_satin_silk_pashmina_1.jpg"
+    },
+    {
+      "idx": 2,
+      "alt": "a blue, red, and white scarf with a design on it",
+      "url": "https://images.unsplash.com/photo-1635417198137-75d31b8045e2?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_10_satin_silk_pashmina_2.jpg"
+    },
+    {
+      "idx": 3,
+      "alt": "a close up view of a pink fabric",
+      "url": "https://images.unsplash.com/photo-1711957922330-9dcdc292c3d0?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_10_satin_silk_pashmina_3.jpg"
+    }
+  ],
+  "prod_11_maroon_silk_dress": [
+    {
+      "idx": 0,
+      "alt": "a close up view of a red fabric",
+      "url": "https://plus.unsplash.com/premium_photo-1672954385632-35f0766b2c10?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_11_maroon_silk_dress_0.jpg"
+    },
+    {
+      "idx": 1,
+      "alt": "a close up view of a maroon fabric",
+      "url": "https://plus.unsplash.com/premium_photo-1672951856497-848490a0bef3?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_11_maroon_silk_dress_1.jpg"
+    },
+    {
+      "idx": 2,
+      "alt": "a close up view of a maroon fabric",
+      "url": "https://plus.unsplash.com/premium_photo-1672951856526-2f1b8ce66e17?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_11_maroon_silk_dress_2.jpg"
+    },
+    {
+      "idx": 3,
+      "alt": "a close up of a red fabric with a flower pattern",
+      "url": "https://plus.unsplash.com/premium_photo-1674747087308-4f456d3a20a0?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_11_maroon_silk_dress_3.jpg"
+    }
+  ],
+  "prod_12_flannel_plaid_shirt": [
+    {
+      "idx": 0,
+      "alt": "a woman standing in front of a tree",
+      "url": "https://plus.unsplash.com/premium_photo-1668485967268-f757c5799b1d?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_12_flannel_plaid_shirt_0.jpg"
+    },
+    {
+      "idx": 1,
+      "alt": "Young woman with blue eyes wearing a red plaid shirt",
+      "url": "https://plus.unsplash.com/premium_photo-1763638140381-8f2bcc26402f?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_12_flannel_plaid_shirt_1.jpg"
+    },
+    {
+      "idx": 2,
+      "alt": "A woman standing in front of a green car",
+      "url": "https://plus.unsplash.com/premium_photo-1731096551833-230615b3eb3f?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_12_flannel_plaid_shirt_2.jpg"
+    },
+    {
+      "idx": 3,
+      "alt": "A woman standing under an umbrella on the street",
+      "url": "https://images.unsplash.com/photo-1726755291321-f0f4d03c37b0?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_12_flannel_plaid_shirt_3.jpg"
+    }
+  ],
+  "prod_13_peony_silk_blouse": [
+    {
+      "idx": 0,
+      "alt": "A patterned long-sleeve shirt displayed with \"sale\" text",
+      "url": "https://plus.unsplash.com/premium_photo-1779576801568-b64bcc97a5df?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_13_peony_silk_blouse_0.jpg"
+    },
+    {
+      "idx": 1,
+      "alt": "A woman in a floral blouse and white pleated skirt wearing a wide-brimmed hat",
+      "url": "https://plus.unsplash.com/premium_photo-1664298375202-6ffab809408d?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_13_peony_silk_blouse_1.jpg"
+    },
+    {
+      "idx": 2,
+      "alt": "woman in white and red floral dress holding white flower",
+      "url": "https://images.unsplash.com/photo-1616902599599-b9aeb17357d9?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_13_peony_silk_blouse_2.jpg"
+    },
+    {
+      "idx": 3,
+      "alt": "a close up of a woman's shirt with flowers on it",
+      "url": "https://images.unsplash.com/photo-1686317422119-e9080fb6b751?auto=format&fit=crop&w=600&q=80",
+      "file": "candidates_preview/prod_13_peony_silk_blouse_3.jpg"
+    }
+  ]
+}

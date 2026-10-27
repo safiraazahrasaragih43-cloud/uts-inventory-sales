@@ -123,7 +123,7 @@ class DatabaseSeeder extends Seeder
                 'selling_price' => 285000,
                 'stock' => 24,
                 'minimum_stock' => 5,
-                'image' => 'products/dress-1.jpg',
+                'image' => 'https://images.unsplash.com/photo-1572005700111-a96a2cb503c2?auto=format&fit=crop&w=800&q=80',
             ],
             [
                 'category_slug' => 'floral-midi-dresses',
@@ -134,7 +134,7 @@ class DatabaseSeeder extends Seeder
                 'selling_price' => 349000,
                 'stock' => 14,
                 'minimum_stock' => 4,
-                'image' => 'products/dress-2.jpg',
+                'image' => 'https://images.unsplash.com/photo-1640923160720-35dddb6348ab?auto=format&fit=crop&w=800&q=80',
             ],
             [
                 'category_slug' => 'pastel-blouses-tops',
@@ -145,6 +145,7 @@ class DatabaseSeeder extends Seeder
                 'selling_price' => 175000,
                 'stock' => 30,
                 'minimum_stock' => 6,
+                'image' => 'https://images.unsplash.com/photo-1745381251702-67b07225e516?auto=format&fit=crop&w=800&q=80',
             ],
             [
                 'category_slug' => 'pastel-blouses-tops',
@@ -155,6 +156,7 @@ class DatabaseSeeder extends Seeder
                 'selling_price' => 199000,
                 'stock' => 18,
                 'minimum_stock' => 5,
+                'image' => 'https://images.unsplash.com/photo-1777462985111-9da64fb2e6e6?auto=format&fit=crop&w=800&q=80',
             ],
             [
                 'category_slug' => 'pleated-skirts-culottes',
@@ -165,6 +167,7 @@ class DatabaseSeeder extends Seeder
                 'selling_price' => 219000,
                 'stock' => 22,
                 'minimum_stock' => 5,
+                'image' => 'https://images.unsplash.com/photo-1766238955752-0200601334ed?auto=format&fit=crop&w=800&q=80',
             ],
             [
                 'category_slug' => 'pleated-skirts-culottes',
@@ -175,6 +178,7 @@ class DatabaseSeeder extends Seeder
                 'selling_price' => 195000,
                 'stock' => 12,
                 'minimum_stock' => 5,
+                'image' => 'https://images.unsplash.com/photo-1687226426353-498d40ec6fbf?auto=format&fit=crop&w=800&q=80',
             ],
             [
                 'category_slug' => 'knitwear-cardigans',
@@ -185,6 +189,7 @@ class DatabaseSeeder extends Seeder
                 'selling_price' => 245000,
                 'stock' => 8,
                 'minimum_stock' => 4,
+                'image' => 'https://images.unsplash.com/photo-1683315565563-f72590773805?auto=format&fit=crop&w=800&q=80',
             ],
             [
                 'category_slug' => 'knitwear-cardigans',
@@ -195,6 +200,7 @@ class DatabaseSeeder extends Seeder
                 'selling_price' => 279000,
                 'stock' => 3, // Low stock on purpose
                 'minimum_stock' => 5,
+                'image' => 'https://images.unsplash.com/photo-1641642231157-0849081598a2?auto=format&fit=crop&w=800&q=80',
             ],
             [
                 'category_slug' => 'premium-scarves-hijabs',
@@ -205,6 +211,7 @@ class DatabaseSeeder extends Seeder
                 'selling_price' => 89000,
                 'stock' => 45,
                 'minimum_stock' => 10,
+                'image' => 'https://images.unsplash.com/photo-1592867874873-85480a35d2aa?auto=format&fit=crop&w=800&q=80',
             ],
             [
                 'category_slug' => 'premium-scarves-hijabs',
@@ -215,7 +222,7 @@ class DatabaseSeeder extends Seeder
                 'selling_price' => 105000,
                 'stock' => 2, // Low stock on purpose
                 'minimum_stock' => 6,
-                'image' => 'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?auto=format&fit=crop&w=800&q=80',
+                'image' => 'https://images.unsplash.com/photo-1619043599439-9b750b7b2623?auto=format&fit=crop&w=800&q=80',
             ],
             [
                 'category_slug' => 'floral-midi-dresses',
@@ -226,7 +233,7 @@ class DatabaseSeeder extends Seeder
                 'selling_price' => 385000,
                 'stock' => 15,
                 'minimum_stock' => 4,
-                'image' => 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=800&q=80',
+                'image' => 'https://images.unsplash.com/photo-1783159143477-7c027bf65772?auto=format&fit=crop&w=800&q=80',
             ],
             [
                 'category_slug' => 'pastel-blouses-tops',
@@ -237,7 +244,7 @@ class DatabaseSeeder extends Seeder
                 'selling_price' => 189000,
                 'stock' => 20,
                 'minimum_stock' => 5,
-                'image' => 'https://images.unsplash.com/photo-1589310243389-96a5483213a8?auto=format&fit=crop&w=800&q=80',
+                'image' => 'https://images.unsplash.com/photo-1630167146816-e1f4ff99c00c?auto=format&fit=crop&w=800&q=80',
             ],
             [
                 'category_slug' => 'pastel-blouses-tops',
@@ -248,7 +255,7 @@ class DatabaseSeeder extends Seeder
                 'selling_price' => 225000,
                 'stock' => 16,
                 'minimum_stock' => 5,
-                'image' => 'https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&w=800&q=80',
+                'image' => 'https://images.unsplash.com/photo-1622738336927-7584b695fc88?auto=format&fit=crop&w=800&q=80',
             ],
         ];
 

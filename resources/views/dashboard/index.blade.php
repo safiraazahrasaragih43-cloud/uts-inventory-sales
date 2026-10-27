@@ -177,12 +177,8 @@
             @foreach($featuredProducts as $item)
                 <div class="bg-white rounded-2xl p-4 border border-blush-200/80 shadow-sm space-y-3 hover:shadow-md transition-shadow">
                     <div class="w-full h-44 rounded-xl bg-[#FAF5F7] overflow-hidden flex items-center justify-center relative">
-                        @if($item->image)
-                            @if(str_starts_with($item->image, 'http'))
-                                <img src="{{ $item->image }}" alt="{{ $item->name }}" class="w-full h-full object-cover">
-                            @else
-                                <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="w-full h-full object-cover">
-                            @endif
+                        @if($item->image_url)
+                            <img src="{{ $item->image_url }}" alt="{{ $item->name }}" class="w-full h-full object-cover">
                         @else
                             <div class="text-[#F27893] text-xs font-semibold">Blush Boutique</div>
                         @endif

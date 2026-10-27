@@ -77,7 +77,7 @@
             Pesona Anggun dalam Balutan Warna <span class="italic text-blush-600">Soft Pastel</span>
         </h1>
         <p class="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed mb-8">
-            Temukan aneka gaun pesta anggun, blus sutra floral, kemeja flanel trendi, knitwear, dan hijab premium. Pesan langsung dengan mudah via WhatsApp kami.
+            Temukan aneka gaun pesta anggun, blus sutra floral, kemeja flanel trendi, knitwear, dan hijab premium. Pesan langsung dengan mudah di website, pembayaran COD (Bayar di Tempat) saat pesanan tiba.
         </p>
 
         <!-- Quick Info Badges -->
@@ -89,7 +89,7 @@
                 <span>📦</span> <span>Stok Realtime Terjamin</span>
             </span>
             <span class="flex items-center space-x-1.5 bg-white/80 px-4 py-2 rounded-xl border border-blush-200 shadow-sm">
-                <span>💬</span> <span>Checkout Cepat WhatsApp</span>
+                <span>🚚</span> <span>Bayar di Tempat (COD)</span>
             </span>
             <span class="flex items-center space-x-1.5 bg-white/80 px-4 py-2 rounded-xl border border-blush-200 shadow-sm">
                 <span>📍</span> <span>Showroom Fisik di Bandung</span>
@@ -210,15 +210,8 @@
         <div class="catalog-flex-wrapper" id="productsFlexGrid">
             @foreach($products as $product)
                 @php
-                    // Fallback to high-res fashion stock image if local image isn't available
-                    $imageUrl = $product->image_url ?: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=800&q=80';
-                    $waNumber = '6281234567890';
-                    $waText = urlencode("Halo BlushBoutique, saya ingin memesan produk:\n"
-                        . "• Produk: {$product->name}\n"
-                        . "• SKU: {$product->sku}\n"
-                        . "• Harga: {$product->formatted_selling_price}\n"
-                        . "Mohon info nomor rekening & konfirmasi stok. Terima kasih!");
-                    $waDirectLink = "https://wa.me/{$waNumber}?text={$waText}";
+                    // High-res boutique product image
+                    $imageUrl = $product->image_url ?: 'https://images.unsplash.com/photo-1760172551807-018cc883cff8?auto=format&fit=crop&w=800&q=80';
                 @endphp
 
                 <!-- Flexbox Column Item -->
@@ -339,13 +332,12 @@
                                         <span>Tambah ke Keranjang</span>
                                     </button>
 
-                                    <!-- Direct Order via WhatsApp -->
-                                    <a href="{{ $waDirectLink }}"
-                                       target="_blank"
-                                       class="w-full sm:w-auto py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 transition-colors flex items-center justify-center space-x-1"
-                                       title="Pesan via WA">
-                                        <svg class="w-4 h-4 fill-current text-emerald-600" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.347.491 1.2.534 1.287.043.087.072.188.014.303-.058.116-.087.188-.173.289l-.26.302c-.087.086-.179.18-.077.355.101.174.449.741.964 1.2.662.591 1.221.774 1.394.861.174.086.275.072.376-.044.101-.116.433-.505.549-.679.116-.173.231-.144.39-.086s1.011.477 1.184.564.289.13.332.202c.043.072.043.419-.101.824z"/></svg>
-                                        <span class="text-xs font-semibold sm:hidden lg:inline">Pesan via WA</span>
+                                    <!-- Direct Order COD -->
+                                    <a href="{{ route('checkout.show', ['product_id' => $product->id]) }}"
+                                       class="w-full sm:w-auto py-2.5 px-3.5 rounded-xl bg-blush-50 hover:bg-blush-100 text-blush-800 border border-blush-200 transition-colors flex items-center justify-center space-x-1.5 font-semibold text-xs {{ $product->stock <= 0 ? 'pointer-events-none opacity-50' : '' }}"
+                                       title="Pesan Sekarang">
+                                        <svg class="w-4 h-4 text-blush-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                        <span>Pesan Sekarang</span>
                                     </a>
                                 </div>
                             </div>
@@ -375,7 +367,7 @@
                     </div>
                     <div>
                         <h3 class="font-serif-luxury text-lg font-bold text-blush-900">Keranjang Pesanan</h3>
-                        <p class="text-xs text-gray-500">Pemesanan resmi langsung ke WhatsApp butik</p>
+                        <p class="text-xs text-gray-500">Metode pembayaran COD (Bayar di Tempat)</p>
                     </div>
                 </div>
                 <button type="button" onclick="closeCartDrawer()" class="p-2 rounded-xl text-gray-400 hover:text-blush-700 hover:bg-blush-100 transition-colors">
@@ -388,7 +380,7 @@
                 <!-- Injected via JavaScript -->
             </div>
 
-            <!-- Drawer Footer: Checkout Form & WhatsApp Button -->
+            <!-- Drawer Footer: Checkout Action Buttons -->
             <div class="p-6 bg-blush-50/50 border-t border-blush-200 space-y-4">
                 <div class="space-y-1.5">
                     <div class="flex justify-between text-xs text-gray-500">
@@ -401,22 +393,10 @@
                     </div>
                 </div>
 
-                <!-- Customer Order Details -->
                 <div class="space-y-2 pt-2 border-t border-blush-100">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Pemesan <span class="text-rose-500">*</span></label>
-                        <input type="text" id="orderCustomerName" placeholder="contoh: Kak Sheila" class="w-full px-3.5 py-2 bg-white rounded-xl border border-blush-200 focus:outline-none focus:ring-2 focus:ring-blush-400 text-xs text-gray-800">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Catatan Ukuran / Alamat Kirim</label>
-                        <input type="text" id="orderNotes" placeholder="opsional: Size M, kirim ke Bandung..." class="w-full px-3.5 py-2 bg-white rounded-xl border border-blush-200 focus:outline-none focus:ring-2 focus:ring-blush-400 text-xs text-gray-800">
-                    </div>
-                </div>
-
-                <div class="space-y-2">
-                    <button type="button" onclick="checkoutWhatsApp()" class="w-full py-3.5 px-4 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center space-x-2">
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.347.491 1.2.534 1.287.043.087.072.188.014.303-.058.116-.087.188-.173.289l-.26.302c-.087.086-.179.18-.077.355.101.174.449.741.964 1.2.662.591 1.221.774 1.394.861.174.086.275.072.376-.044.101-.116.433-.505.549-.679.116-.173.231-.144.39-.086s1.011.477 1.184.564.289.13.332.202c.043.072.043.419-.101.824z"/></svg>
-                        <span>Pesan via WhatsApp Sekarang</span>
+                    <button type="button" onclick="proceedToCheckout()" class="w-full py-3.5 px-4 rounded-2xl blush-btn text-white font-bold text-sm shadow-lg shadow-blush-500/25 transition-all flex items-center justify-center space-x-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <span>Pesan Sekarang (Checkout COD)</span>
                     </button>
                     <button type="button" onclick="clearCart()" class="w-full text-center text-xs text-gray-400 hover:text-rose-500 py-1 transition-colors">
                         Kosongkan Keranjang
@@ -660,40 +640,13 @@
         }, 350);
     }
 
-    // Direct WhatsApp Checkout
-    function checkoutWhatsApp() {
-        if (cart.length === 0) {
-            alert('Keranjang belanja Anda masih kosong. Silakan pilih pakaian terlebih dahulu.');
+    // Navigate to COD Checkout Page
+    function proceedToCheckout() {
+        if (!cart || cart.length === 0) {
+            alert('Keranjang belanja Anda masih kosong. Silakan pilih busana terlebih dahulu.');
             return;
         }
-
-        const customerName = document.getElementById('orderCustomerName').value.trim() || 'Pelanggan Butik';
-        const notes = document.getElementById('orderNotes').value.trim();
-        const waNumber = '6281234567890'; // WhatsApp Butik Resmi
-
-        let message = `Halo BlushBoutique, saya ingin memesan busana berikut:\n\n`;
-        let total = 0;
-
-        cart.forEach((item, i) => {
-            const subtotal = item.price * item.quantity;
-            total += subtotal;
-            message += `${i + 1}. *${item.name}*\n`;
-            message += `   - SKU: ${item.sku}\n`;
-            message += `   - Ukuran: ${item.size}\n`;
-            message += `   - Jumlah: ${item.quantity} pcs\n`;
-            message += `   - Subtotal: Rp ${Number(subtotal).toLocaleString('id-ID')}\n\n`;
-        });
-
-        message += `-------------------------\n`;
-        message += `*TOTAL PEMBAYARAN: Rp ${Number(total).toLocaleString('id-ID')}*\n\n`;
-        message += `👤 *Nama Pemesan:* ${customerName}\n`;
-        if (notes) {
-            message += `📝 *Catatan / Alamat:* ${notes}\n`;
-        }
-        message += `\nMohon informasi ketersediaan stok & nomor rekening transfer/QRIS untuk pembayaran. Terima kasih! 🌸`;
-
-        const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
-        window.open(waUrl, '_blank');
+        window.location.href = "{{ route('checkout.show') }}";
     }
 
     // Quick View Modal
