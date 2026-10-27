@@ -365,6 +365,8 @@ erDiagram
 ### 2. Transaksi Kasir dan Cetak Struk Penjualan
 ![Screenshot Transaksi](./docs/images/transaksi.png)
 
+![Screenshot Struk Penjualan](./docs/images/struk.png)
+
 ---
 
 ## Pengujian Unit dan Fitur (PHPUnit)
